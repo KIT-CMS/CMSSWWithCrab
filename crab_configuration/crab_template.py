@@ -15,7 +15,7 @@ config.JobType.pluginName = "Analysis"
 # Data section
 
 # Site section
-config.Site.storageSite = "T1_DE_KIT"
+config.Site.storageSite = "T1_DE_KIT_Disk"
 
 # User section
 config.User.voGroup = "dcms"
