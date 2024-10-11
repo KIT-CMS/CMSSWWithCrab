@@ -1,0 +1,16 @@
+data:
+  eventcontent: NANOAOD
+  datetier: NANOAOD
+  step: NANO
+  type: nano
+  python_filename: nano_config.py
+  fileout: "file:nano.root"
+  filein: inputfile.root
+mc:
+  eventcontent: NANOAODSIM
+  datetier: NANOAODSIM
+  step: NANO
+  type: nano
+  python_filename: nanosim_config.py
+  fileout: "file:nanosim.root"
+  filein: inputfile.root
