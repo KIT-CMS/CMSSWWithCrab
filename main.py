@@ -101,7 +101,7 @@ def prepare(args):
                 for dkey, dname in datasets.items():
                     dataset_crab = copy.deepcopy((args["crab"]))
                     dataset_crab.General.requestName = "_".join([k,dt_period,dataset_type,dkey])
-                    dataset_crab.General.psetName = str(args["conditions"][k][dt_period]["cmsrun"])
+                    dataset_crab.JobType.psetName = str(args["conditions"][k][dt_period]["cmsrun"])
                     dataset_crab_path = crabconfigarea / dataset_crab.General.requestName
                     args["crabconfigs"][k][dt_period][dataset_type][dkey] = str(dataset_crab_path) + ".py"
                     # TODO: introduce a check for existence and checksum check
