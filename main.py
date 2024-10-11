@@ -86,7 +86,7 @@ def prepare(args):
     args["crab"].General.workArea = str(crabworkarea)
     args["crab"].JobType.numCores = args["numCores"]
     args["crab"].JobType.maxMemoryMB = args["maxMemoryMBperCore"] * args["numCores"]
-    args["crab"].JobType.publication = args["publication"]
+    args["crab"].Data.publication = args["publication"]
     print("\nGeneral crab configuration:")
     print(args["crab"])
 
