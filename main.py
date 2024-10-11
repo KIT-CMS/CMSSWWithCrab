@@ -66,7 +66,7 @@ def prepare(args):
             cmsrundir.mkdir(mode=0o755, parents=True, exist_ok=True)
             cmsrun = cmsrundir / cmsdriverspecs["python_filename"]
             args["conditions"][k][dt_period]["cmsrun"] = cmsrun
-            command = f'cmsDriver.py {cmsdriverspecs["type"]} --{k} --filein {cmsdriverspecs["filein"]} --fileout {cmsdriverspecs["fileout"]} --step {cmsdriverspecs["step"]} --eventcontent {cmsdriverspecs["eventcontent"]} --datatier {cmsdriverspecs["datatier"]} --python_filename {str(cmsrun)} --conditions {configuration["globaltag"]} --era {configuration["era"]} --no_exec'
+            command = f'cmsDriver.py {cmsdriverspecs["type"]} --{k} --filein file:{cmsdriverspecs["filein"]} --fileout {cmsdriverspecs["fileout"]} --step {cmsdriverspecs["step"]} --eventcontent {cmsdriverspecs["eventcontent"]} --datatier {cmsdriverspecs["datatier"]} --python_filename {str(cmsrun)} --conditions {configuration["globaltag"]} --era {configuration["era"]} --no_exec'
             print(f"Running: {command}")
             # TODO: introduce a checksum check to be sure, that the new round creates the same config, if one exists.
             result = subprocess.run(shlex.split(command), capture_output=True, text=True)
