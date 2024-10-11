@@ -1,0 +1,50 @@
+# Automatic mapping of conditions can be seen here: https://github.com/cms-sw/cmssw/blob/master/Configuration/AlCa/python/autoCond.py
+# Database of all defined conditions: https://cms-conddb.cern.ch/cmsDbBrowser/index
+# Corresponding Twiki: https://twiki.cern.ch/twiki/bin/viewauth/CMS/CmsDbBrowser
+# General entry point for analysis recipes: https://cms-info.web.cern.ch/coordination/physics-performance-datasets-ppd
+# A bit outdated, but for Run 2 NanoAOD era modifiers valid source: https://gitlab.cern.ch/cms-nanoAOD/nanoaod-doc/-/wikis/Releases/NanoAODv9
+# A bit outdated, but for Run 3 NanoAOD era modifiers valid source: https://gitlab.cern.ch/cms-nanoAOD/nanoaod-doc/-/wikis/Releases/NanoAODv12
+data:
+  2016ULpreVFP:
+    globaltag: "auto:run2_data"
+    era: "Run2_2016_HIPM,run2_nanoAOD_106Xv2"
+  2016ULpostVFP:
+    globaltag: "auto:run2_data"
+    era: "Run2_2016,run2_nanoAOD_106Xv2"
+  2017UL:
+    globaltag: "auto:run2_data"
+    era: "Run2_2017,run2_nanoAOD_106Xv2"
+  2018UL:
+    globaltag: "auto:run2_data"
+    era: "Run2_2018,run2_nanoAOD_106Xv2"
+  2022:
+    globaltag: "auto:run3_data"
+    era: "Run3"
+  2023:
+    globaltag: "auto:run3_data"
+    era: "Run3"
+  2024:
+    globaltag: "auto:run3_data"
+    era: "Run3"
+mc:
+  2016ULpreVFP:
+    globaltag: "auto:run2_mc_pre_vfp"
+    era: "Run2_2016_HIPM,run2_nanoAOD_106Xv2"
+  2016ULpostVFP:
+    globaltag: "auto:run2_mc"
+    era: "Run2_2016,run2_nanoAOD_106Xv2"
+  2017UL:
+    globaltag: "auto:phase1_2017_realistic"
+    era: "Run2_2017,run2_nanoAOD_106Xv2"
+  2018UL:
+    globaltag: "auto:phase1_2018_realistic"
+    era: "Run2_2018,run2_nanoAOD_106Xv2"
+  2022:
+    globaltag: "auto:phase1_2022_realistic"
+    era: "Run3"
+  2023:
+    globaltag: "auto:phase1_2023_realistic"
+    era: "Run3"
+  2024:
+    globaltag: "auto:phase1_2024_realistic"
+    era: "Run3"
