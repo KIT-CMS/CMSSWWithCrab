@@ -49,7 +49,7 @@ def prepare(args):
     work_directory = pathlib.Path(args["work_directory"])
     work_directory.mkdir(mode=0o755,parents=True,exist_ok=True)
 
-    # Prepare cmsDriver commands
+    # Prepare cmsDriver commands and create cmsRun configs
     cmsdriver_directory = work_directory / "cmsdriver"
     cmsdriver_directory.mkdir(mode=0o755, parents=True, exist_ok=True)
 
