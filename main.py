@@ -6,6 +6,7 @@ import argparse
 import pathlib
 import subprocess
 import shlex
+import copy
 
 from crab_configuration.crab_template import config
 
@@ -33,6 +34,11 @@ def parse_args():
 
     # Crab configuration group
     crab = parser.add_argument_group("crab3", "Configuration related to crab3 settings to submit a crab task")
+
+    ## Optional arguments
+    crab.add_argument("--numCores",type=int,default=1,help="Number of Cores used by crab for the job")
+    crab.add_argument("--maxMemoryMBperCore",type=int,default=2000,help="Memory in MB used by the crab job per core")
+    crab.add_argument("--publication",action="store_true",help="Flag to decide, whether to publish crab output dataset")
 
     return parser.parse_args()
 
@@ -71,7 +77,40 @@ def prepare(args):
             # TODO: introduce a checksum check to be sure, that the new round creates the same config, if one exists.
             result = subprocess.run(shlex.split(command), capture_output=True, text=True)
             print(f"\tReturn code: {result.returncode}")
-            
+
+    # Construct general crab config based on provided crab3 settings
+    crabworkarea = work_directory / "crab"
+    crabworkarea.mkdir(mode=0o755,parents=True,exist_ok=True)
+    crabconfigarea = work_directory / "crabconfigs"
+    crabconfigarea.mkdir(mode=0o755,parents=True,exist_ok=True)
+    args["crab"].General.workArea = str(crabworkarea)
+    args["crab"].JobType.numCores = args["numCores"]
+    args["crab"].JobType.maxMemoryMB = args["maxMemoryMBperCore"] * args["numCores"]
+    args["crab"].JobType.publication = args["publication"]
+    print("\nGeneral crab configuration:")
+    print(args["crab"])
+
+    args["crabconfigs"] = {}
+    # Loop through the datasets and create dataset-specific crab configuration files
+    for k, dt_period_config in args["datasets"].items(): # k is key from {data, mc}
+        args["crabconfigs"][k] = {}
+        for dt_period, dataset_type_config in dt_period_config.items():
+            args["crabconfigs"][k][dt_period] = {}
+            for dataset_type, datasets in dataset_type_config.items():
+                args["crabconfigs"][k][dt_period][dataset_type] = {}
+                for dkey, dname in datasets.items():
+                    dataset_crab = copy.deepcopy((args["crab"]))
+                    dataset_crab.JobType.requestName = "_".join([k,dt_period,dataset_type,dkey])
+                    dataset_crab.JobType.psetName = str(args["conditions"][k][dt_period]["cmsrun"])
+                    dataset_crab_path = crabconfigarea / dataset_crab.JobType.requestName
+                    args["crabconfigs"][k][dt_period][dataset_type][dkey] = str(dataset_crab_path) + ".py"
+                    # TODO: introduce a check for existence and checksum check
+                    print(f'Creating crab config: {args["crabconfigs"][k][dt_period][dataset_type][dkey]}')
+                    with open(args["crabconfigs"][k][dt_period][dataset_type][dkey], "w") as out_crab:
+                        out_crab.write(str(dataset_crab))
+
+    return args
+                    
 if __name__ == "__main__":
     args = initialize(parse_args())
-    prepare(args)
+    args = prepare(args)

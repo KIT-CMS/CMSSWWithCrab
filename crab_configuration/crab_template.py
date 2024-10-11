@@ -1,5 +1,6 @@
 # General Twiki for crab: https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideCrab
 # Structure of a crab configuration file: https://twiki.cern.ch/twiki/bin/view/CMSPublic/CRAB3ConfigurationFile
+# Some documentation is migrated to: https://cmscrab.docs.cern.ch
 import CRABClient
 from CRABClient.UserUtilities import config
 
