@@ -17,4 +17,4 @@ config.JobType.pluginName = "Analysis"
 config.Site.storageSite = "T1_DE_KIT"
 
 # User section
-config.voGroup = "/cms/country/de"
+config.User.voGroup = "/cms/country/de"
