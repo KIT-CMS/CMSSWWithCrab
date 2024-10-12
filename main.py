@@ -31,6 +31,8 @@ def parse_args():
     ## Necessary arguments
     cmssw.add_argument("--conditions",required=True,help="Path to the conditions configuration .yaml file")
     cmssw.add_argument("--cmsdriver",required=True,help="Path to the cmsdriver configuration .yaml file")
+    cmssw.add_argument("--nThreads",type=int,default=1,help="Number of threads to be used for the cmsRun config")
+    cmssw.add_argument("--nStreams",type=int,default=0,help="Number of streams to be used for the cmsRun config. If set to 0, nThreads will be taken by cmsRun.")
 
     # Crab configuration group
     crab = parser.add_argument_group("crab3", "Configuration related to crab3 settings to submit a crab task")
@@ -72,7 +74,7 @@ def prepare(args):
             cmsrundir.mkdir(mode=0o755, parents=True, exist_ok=True)
             cmsrun = cmsrundir / cmsdriverspecs["python_filename"]
             args["conditions"][k][dt_period]["cmsrun"] = cmsrun
-            command = f'cmsDriver.py {cmsdriverspecs["type"]} --{k} --filein file:{cmsdriverspecs["filein"]} --fileout {cmsdriverspecs["fileout"]} --step {cmsdriverspecs["step"]} --eventcontent {cmsdriverspecs["eventcontent"]} --datatier {cmsdriverspecs["datatier"]} --python_filename {str(cmsrun)} --conditions {configuration["globaltag"]} --era {configuration["era"]} --no_exec'
+            command = f'cmsDriver.py {cmsdriverspecs["type"]} --{k} --filein file:{cmsdriverspecs["filein"]} --fileout {cmsdriverspecs["fileout"]} --step {cmsdriverspecs["step"]} --eventcontent {cmsdriverspecs["eventcontent"]} --datatier {cmsdriverspecs["datatier"]} --python_filename {str(cmsrun)} --conditions {configuration["globaltag"]} --era {configuration["era"]} --no_exec --nThreads {args["nThreads"]} --nStreams {args["nStreams"]}'
             print(f"Running: {command}")
             # TODO: introduce a checksum check to be sure, that the new round creates the same config, if one exists.
             result = subprocess.run(shlex.split(command), capture_output=True, text=True)
