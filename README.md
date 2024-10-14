@@ -62,3 +62,13 @@ For [`create_configs.py`](create_configs.py), the following were found of import
 * `--maxMemoryMBperCore` is what you would like to request for memory per CPU for your job. This number is then multiplied by what was configured in `--numCores`, and is passed to `--maxMemoryMB` from crab.
 * `--splitting` and `--unitsPerJob` define, how your input data is distributed among the jobs. In most cases, `Automatic` splitting is a good choice, and `--unitsPerJob` represent in that case the desired job runtime. Please get familiar with this setting
 * `--publication` is a flag, which allows to publish your output data in CMS DBS under `phys03` instance. This makes it much simpler to collect lists of output files. Feel free to use that for your actual production campaigns.
+
+### Example call:
+
+```bash
+./create_configs.py --work-directory /ceph/akhmet/test_crab_nanoaod_submission_14-10-2024/ \
+  --datasets configuration/datasets_miniaod_boostedhtt.yaml \
+  --conditions configuration/conditions.yaml \
+  --cmsdriver configuration/cmsdriver_nanoaod_specifics.yaml \
+  --numCores 4 --nThreads 4 --nStreams 2 --maxMemoryMBperCore 2500 --publication
+```
