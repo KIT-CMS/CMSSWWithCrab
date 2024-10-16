@@ -1,19 +1,19 @@
 #! /usr/bin/env python3
 
 import yaml
-import asyncio
 import argparse
 import pathlib
 import subprocess
 import shlex
 import copy
+import datetime
 
 from crab_configuration.crab_template import config
 
 
 def parse_args():
     parser = argparse.ArgumentParser(
-        description="Script to start and manage a CMSSW production with crab",
+        description="Script to prepare a CMSSW production with crab",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter
     )
 
@@ -52,6 +52,7 @@ def initialize(args):
     args_dict["conditions"] = yaml.safe_load(open(args_dict["conditions"], "r"))
     args_dict["cmsdriver"] = yaml.safe_load(open(args_dict["cmsdriver"], "r"))
     args_dict["crab"] = config
+    args_dict["timestamp"] = str(int(datetime.datetime.now().timestamp()))
     return args_dict
 
 def prepare(args):
@@ -93,6 +94,7 @@ def prepare(args):
     args["crab"].Data.publication = args["publication"]
     args["crab"].Data.splitting = args["splitting"]
     args["crab"].Data.unitsPerJob = args["unitsPerJob"]
+    args["crab"].Data.outputDatasetTag = args["timestamp"]
     print("\nGeneral crab configuration:")
     print(args["crab"])
 
