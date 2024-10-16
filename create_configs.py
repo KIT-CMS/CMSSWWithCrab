@@ -39,7 +39,8 @@ def parse_args():
 
     ## Optional arguments
     crab.add_argument("--numCores",type=int,default=1,help="Number of Cores used by crab for the job")
-    crab.add_argument("--maxMemoryMBperCore",type=int,default=2000,help="Memory in MB used by the crab job per core")
+    crab.add_argument("--maxMemoryMBperCore",type=int,default=2000,help="Maximum memory in MB to be used by the crab job per core")
+    crab.add_argument("--maxJobRuntimeMin",type=int,default=720,help="Maximum runtime expected for the job im minutes")
     crab.add_argument("--publication",action="store_true",help="Flag to decide, whether to publish crab output dataset")
     crab.add_argument("--splitting",choices=["Automatic", "FileBased", "LumiBased", "EventAwareLumiBased"],default="Automatic",help="Choice of splitting of the task into jobs.")
     crab.add_argument("--unitsPerJob",type=int,default=720,help="Rough number of files (FileBased), luminosity sections (LumiBased), or events (EventAwareLumiBased) to have per job, depending on the corresponding splitting. In case of Automatic splitting: target runtime in minutes with a minimum of 180.")
@@ -91,6 +92,7 @@ def prepare(args):
     args["crab"].General.workArea = str(crabworkarea)
     args["crab"].JobType.numCores = args["numCores"]
     args["crab"].JobType.maxMemoryMB = args["maxMemoryMBperCore"] * args["numCores"]
+    args["crab"].JobType.maxJobRuntimeMin = args["maxJobRuntimeMin"]
     args["crab"].Data.publication = args["publication"]
     args["crab"].Data.splitting = args["splitting"]
     args["crab"].Data.unitsPerJob = args["unitsPerJob"]
