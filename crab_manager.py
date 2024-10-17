@@ -107,7 +107,7 @@ async def worker(queue, args, worker_id):
                     while not resub:
                         resub = await resubmit(cfg_directory, logger, **kwargs)
                         await asyncio.sleep(10)
-            await asyncio.sleep(60)
+            await asyncio.sleep(900)
 
         queue.task_done()
 
