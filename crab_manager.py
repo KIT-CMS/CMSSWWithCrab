@@ -23,7 +23,7 @@ def parse_args():
     # Main options
 
     ## Necessary arguments
-    parser.add_argument("--crab-config-pattern", required=True, help="Path pattern to the crab configuration files, processed with glob")
+    parser.add_argument("--crab-config-patterns", nargs='+', required=True, help="List of path patterns to the crab configuration files, processed with glob")
     parser.add_argument("--maxmemory", default=None, help="Maximum memory threshold in MB for resubmission passed to crab")
     parser.add_argument("--maxjobruntime", default=None, help="Maximum job runtime threshold in minutes for resubmission passed to crab")
 
@@ -104,7 +104,11 @@ async def worker(queue, args, worker_id):
 async def main():
     args = parse_args()
 
-    config_paths = glob.glob(args.crab_config_pattern)
+    # Process the list of patterns and create a flat list of config paths
+    config_paths = []
+    for pattern in args.crab_config_patterns:
+        config_paths.extend(glob.glob(pattern))
+
     queue = asyncio.Queue()
 
     # Create worker tasks
