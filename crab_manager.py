@@ -41,6 +41,7 @@ async def submit(config, logger):
         return await loop.run_in_executor(None, lambda: crabCommand('submit', config=config))
     except Exception as e:
         logger.error(f"Failed submitting task:\n{e}")
+        return None
 
 async def status(cfg_dir, logger):
     loop = asyncio.get_event_loop()
@@ -48,6 +49,7 @@ async def status(cfg_dir, logger):
         return await loop.run_in_executor(None, lambda: crabCommand('status', dir=cfg_dir))
     except Exception as e:
         logger.error(f"Failed querying status of task:\n{e}")
+        return None
 
 async def resubmit(cfg_dir, logger, **kwargs):
     loop = asyncio.get_event_loop()
@@ -55,6 +57,7 @@ async def resubmit(cfg_dir, logger, **kwargs):
         return await loop.run_in_executor(None, lambda: crabCommand('resubmit', dir=cfg_dir, **kwargs))
     except Exception as e:
         logger.error(f"Failed resubmitting task:\n{e}")
+        return None
 
 async def worker(queue, args, worker_id):
     # Set up logging for this worker
@@ -75,7 +78,10 @@ async def worker(queue, args, worker_id):
         cfg_directory = os.path.join(cfg.General.workArea, "crab_" + cfg.General.requestName)
         if not os.path.isdir(cfg_directory):
             logger.info(f"Submitting {cfgpath}")
-            await submit(cfg, logger)
+            res = None
+            while not res:
+                res = await submit(cfg, logger)
+                await asyncio.sleep(10)
             await asyncio.sleep(600)
 
         n_published = -1
@@ -84,19 +90,23 @@ async def worker(queue, args, worker_id):
         while n_all != n_finished or n_all != n_published:
             logger.info(f"Checking task status for {cfg_directory}")
             res = await status(cfg_directory, logger)
-            #json.dump(res, open("res.json", "w"), indent=2, sort_keys=True)
-            n_all = sum([res["jobsPerStatus"][state] for state in res["jobsPerStatus"].keys()])
-            n_intermediate = res["jobsPerStatus"].get("idle", 0) + res["jobsPerStatus"].get("running", 0)
-            n_finished = res["jobsPerStatus"].get("finished", 0)
-            n_failed = res["jobsPerStatus"].get("failed", 0)
-            n_published = res["publication"].get("done", 0)
-            logger.info(f"Number of jobs: all = {n_all}, intermediate = {n_intermediate}, finished = {n_finished}, failed = {n_failed}, published = {n_published}")
-            kwargs = {k: v for k, v in {
-                "maxmemory": args.maxmemory,
-                "maxjobruntime": args.maxjobruntime,
-            }.items() if v is not None}
-            if n_intermediate == 0 and n_failed > 0 and kwargs:
-                await resubmit(cfg_directory, logger, **kwargs)
+            if res:
+                #json.dump(res, open("res.json", "w"), indent=2, sort_keys=True)
+                n_all = sum([res["jobsPerStatus"][state] for state in res["jobsPerStatus"].keys()])
+                n_intermediate = res["jobsPerStatus"].get("idle", 0) + res["jobsPerStatus"].get("running", 0)
+                n_finished = res["jobsPerStatus"].get("finished", 0)
+                n_failed = res["jobsPerStatus"].get("failed", 0)
+                n_published = res["publication"].get("done", 0)
+                logger.info(f"Number of jobs: all = {n_all}, intermediate = {n_intermediate}, finished = {n_finished}, failed = {n_failed}, published = {n_published}")
+                kwargs = {k: v for k, v in {
+                    "maxmemory": args.maxmemory,
+                    "maxjobruntime": args.maxjobruntime,
+                }.items() if v is not None}
+                if n_intermediate == 0 and n_failed > 0 and kwargs:
+                    resub = None
+                    while not resub:
+                        resub = await resubmit(cfg_directory, logger, **kwargs)
+                        await asyncio.sleep(10)
             await asyncio.sleep(60)
 
         queue.task_done()
