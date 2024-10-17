@@ -96,7 +96,6 @@ def prepare(args):
     args["crab"].Data.publication = args["publication"]
     args["crab"].Data.splitting = args["splitting"]
     args["crab"].Data.unitsPerJob = args["unitsPerJob"]
-    args["crab"].Data.outputDatasetTag = args["timestamp"]
     print("\nGeneral crab configuration:")
     print(args["crab"])
 
@@ -113,6 +112,7 @@ def prepare(args):
                     dataset_crab.General.requestName = "_".join([k,dt_period,dataset_type,dkey])
                     dataset_crab.JobType.psetName = str(args["conditions"][k][dt_period]["cmsrun"])
                     dataset_crab.Data.inputDataset = dname
+                    dataset_crab.Data.outputDatasetTag = dataset_crab.General.requestName + "_" + args["timestamp"]
                     dataset_crab_path = crabconfigarea / dataset_crab.General.requestName
                     args["crabconfigs"][k][dt_period][dataset_type][dkey] = str(dataset_crab_path) + ".py"
                     # TODO: introduce a check for existence and checksum check
