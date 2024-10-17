@@ -38,21 +38,21 @@ def load_config(config_path):
 async def submit(config):
     loop = asyncio.get_event_loop()
     try:
-        return await loop.run_in_executor(None,crabCommand,'submit',config=config)
+        return await loop.run_in_executor(None, lambda: crabCommand('submit',config=config))
     except Exception as e:
         print(f"Failed submitting task:\n{e}")
 
 async def status(cfg_dir):
     loop = asyncio.get_event_loop()
     try:
-        return await loop.run_in_executor(None, crabCommand, 'status',dir=cfg_dir)
+        return await loop.run_in_executor(None, lambda: crabCommand('status',dir=cfg_dir))
     except Exception as e:
         print(f"Failed querying status of task:\n{e}")
 
 async def resubmit(cfg_dir, **kwargs):
     loop = asyncio.get_event_loop()
     try:
-        return await loop.run_in_executor(None,crabCommand,'resubmit',dir=cfg_dir,**kwargs)
+        return await loop.run_in_executor(None,lambda: crabCommand('resubmit',dir=cfg_dir,**kwargs))
     except Exception as e:
         print(f"Failed resubmitting task:\n{e}")
 
