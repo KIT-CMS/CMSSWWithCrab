@@ -46,11 +46,17 @@ Please get familiar with these files and their structure to be able to construct
 
 Often it might make sense to run `cmsRun` multi-threaded (and even with different number of streams). To this up properly, please use the `--nThreads` and `--nStreams`
 options of [`create_configs.py`](create_configs.py), which are passed to `cmsRun`. If doing so for the case of grid jobs, you need to take into account,
-how many threads/streams are usually used within the CMS grid environment. Suggestion: please use at most 4 cores, since these would better fit in into CMSW job containers,
-which are designed for jobs wiht 4 or 8 threads.
+how many threads/streams are usually used within the CMS grid environment. Suggestion: please use at 8 cores, since these would better fit in into CMSW job containers,
+which are designed for jobs with up to 8 threads.
 
 Furthermore, it might be, that depending on these settings, the memory consumption of the job significantly changes.
 Feel free to set these numbers differently, e.g. `--nThreads 4`, but `--nStreams 2`, or even `--nStreams 1`.
+
+You are strongly adviced to test the `cmsRun` config locally on an representative input file, check both the runtime and memory consumption, and project
+the outcome to proper requirements for `crab3` config.
+
+It might well be, that there are differences in performance and resource consumption between processing recorded data samples, or simulated samples.
+In consequence, please test these two main use-cases separately from each other.
 
 ### Some considerations for `crab3` configs
 
@@ -60,15 +66,17 @@ For [`create_configs.py`](create_configs.py), the following were found of import
 
 * `--numCores` regulates the number of requested CPUs. Please choose that consistently with the `cmsRun` settings for `--nThreads` and `--nStreams` to avoid overuse of requested resources.
 * `--maxMemoryMBperCore` is what you would like to request for memory per CPU for your job. This number is then multiplied by what was configured in `--numCores`, and is passed to `--maxMemoryMB` from crab.
-* `--splitting` and `--unitsPerJob` define, how your input data is distributed among the jobs. In most cases, `Automatic` splitting is a good choice, and `--unitsPerJob` represent in that case the desired job runtime. Please get familiar with this setting
-* `--publication` is a flag, which allows to publish your output data in CMS DBS under `phys03` instance. This makes it much simpler to collect lists of output files. Feel free to use that for your actual production campaigns.
+* `--splitting` and `--unitsPerJob` define, how your input data is distributed among the jobs. Usually, `Automatic` splitting is a good choice, and `--unitsPerJob` represent in that case the desired job runtime - try to target something below 24 hours, e.g. 1250 minutes. Please get familiar with this setting. However, since testing a `cmsRun` config locall works easiest with a specific number of files or events, you might want to consider `FileBased` or `EventAwareLumiBased` splitting to have more control over the runtime and memory consumption of your jobs. This might prevent too frequent resubmissions of jobs.
+* `maxJobRuntimeMin` defines the maximum expected runtime of your jobs and is passed to crab configuration. Jobs with larger runtimes will be potentially aborted and fail, so try to estimate this number properly.
+* `--publication` is a flag, which allows to publish your output data in CMS DBS under `phys03` instance. This makes it much simpler to collect lists of output files. Feel free to use that for your actual production campaigns. In case you choose to publish your dataset, it obtains a custom `outputDatasetTag` used in the dataset name, constructed from `requestName` and the timestamp integer at the time your are running `./create_configs.py`. This ensures, that datasets have (more or less) unique names. In that context, please avoid submitting a `crab3` task, then deleting the task directory after some time, and then, resubmitting the same task with the same configuation again. That might lead to duplication of content of published datasets. At each task submission attempt, please ensure, that you use a new configuration (e.g. by re-rerunning `./create_configs.py`).
 
 ### Example call:
 
 ```bash
-./create_configs.py --work-directory /ceph/akhmet/test_crab_nanoaod_submission_14-10-2024/ \
+./create_configs.py --work-directory ~/crab_work_dir \
   --datasets configuration/datasets_miniaod_boostedhtt.yaml \
   --conditions configuration/conditions.yaml \
   --cmsdriver configuration/cmsdriver_nanoaod_specifics.yaml \
-  --numCores 4 --nThreads 4 --nStreams 2 --maxMemoryMBperCore 2500 --publication
+  --numCores 4 --nThreads 4 --nStreams 2 --maxMemoryMBperCore 1250 --publication
 ```
+## Managing crab3 multiple tasks
