@@ -79,4 +79,5 @@ For [`create_configs.py`](create_configs.py), the following were found of import
   --cmsdriver configuration/cmsdriver_nanoaod_specifics.yaml \
   --numCores 4 --nThreads 4 --nStreams 2 --maxMemoryMBperCore 1250 --publication
 ```
-## Managing crab3 multiple tasks
+## Managing multiple crab3 tasks
+
