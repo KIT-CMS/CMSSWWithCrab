@@ -39,8 +39,9 @@ async def submit(config, logger):
         return await loop.run_in_executor(None, lambda: crabCommand('submit', config=config))
     except Exception as e:
         logger.error(f"Failed submitting task:\n{e}")
-        logger.debug(f"Cleaning up config directory {config.General.workArea}")
-        shutil.rmtree(config.General.workArea)
+        cfg_directory = os.path.join(cfg.General.workArea, "crab_" + cfg.General.requestName)
+        logger.debug(f"Cleaning up config directory {cfg_directory}")
+        shutil.rmtree(cfg_directory)
         return None
 
 async def status(cfg_dir, logger):
