@@ -100,3 +100,7 @@ For that purpose, the script [`crab_manager.py`](crab_manager.py) was designed. 
   --maxjobruntime 1300 \
   --maxmemory 8000
 ```
+
+## Useful notes
+
+* very good monitoring page for crab tasks: https://monit-grafana.cern.ch/d/15468761344/personal-tasks-monitoring-globalview?orgId=11&from=now-1h&to=now. Try to adjust the settings according to your CERN account name, and the time period of interest.
