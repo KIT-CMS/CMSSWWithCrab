@@ -1,0 +1,63 @@
+# NanoAOD production campaign to test the tool
+
+## Used configuration and setup:
+
+* conditions: [`configuration/conditions.yaml`](configuration/conditions.yaml)
+* cmsdriver settings for nanoAOD: [`configuration/cmsdriver_nanoaod_specifics.yaml`](configuration/cmsdriver_nanoaod_specifics.yaml)
+* datasets: [`configuration/datasets_miniaod_boostedhtt.yaml`](configuration/datasets_miniaod_boostedhtt.yaml)
+* crab config template: [`crab_configuration/crab_template.py`](crab_configuration/crab_template.py)
+* CMSSW release: CMSSW_14_2_0_pre2
+
+## Creation of CMSSW and Crab configs call
+
+### data:
+
+Tested locally on one input file with about 35k events, and there weren't any memory leaks visible. Something like 2.5 GB memory was used usually with 8 threads and 8 streams. Runtime for this was around half an hour. Used these values to have a good estimate for the `crab3` jobs.
+
+Final call:
+
+```bash
+./create_configs.py --work-directory /ceph/$(whoami)/test_crab_nanoaod_submission_18-10-2024_data/ \
+  --datasets configuration/datasets_miniaod_boostedhtt.yaml \
+  --conditions configuration/conditions.yaml \
+  --cmsdriver configuration/cmsdriver_nanoaod_specifics.yaml \
+  --nThreads 8 --numCores 8 \
+  --maxMemoryMBperCore 1000 --publication --splitting FileBased --unitsPerJob 15 --maxJobRuntimeMin 1250
+```
+
+### mc:
+
+Tested locally on one input file with about 30k events, and unfortunately, there was a memory leak. Something like 15 GB memory was used usually with 8 threads and 8 streams. Desided to go for a `EventAwareLumiBased` splitting with 15k events to be processed. This reduces the runtime to something like an hour. To be safe, choosing 2 hours as maximum runtime. This will lead to a lot of and extremely small output files. To be checked, whether this impacts the performance later on.
+
+Final call:
+
+```bash
+./create_configs.py --work-directory /ceph/$(whoami)/test_crab_nanoaod_submission_18-10-2024_mc/ \
+  --datasets configuration/datasets_miniaod_boostedhtt.yaml \
+  --conditions configuration/conditions.yaml \
+  --cmsdriver configuration/cmsdriver_nanoaod_specifics.yaml \
+  --nThreads 8 --numCores 8 \
+  --maxMemoryMBperCore 1000 --publication --splitting FileBased --unitsPerJob 15 --maxJobRuntimeMin 1250
+```
+
+## Managing of crab tasks call
+
+Initial calls will be presented in the following, which can be adapted further for resubmission by adding at least one of the two options `--maxmemory` and `--maxjobruntime`-
+
+### data:
+
+```bash
+./crab_manager --crab-config-pattern \
+  /ceph/$(whoami)/test_crab_nanoaod_submission_18-10-2024_data/crabconfigs/data_2018UL_singlemuon_SingleMuon_Run2018*.py
+```
+
+### mc:
+
+```bash
+./crab_manager --crab-config-pattern \
+  /ceph/$(whoami)/test_crab_nanoaod_submission_18-10-2024_mc/crabconfigs/mc_2018UL_dy_DYJetsToLL_LHEFilterPtZ-250To400.py \
+  /ceph/$(whoami)/test_crab_nanoaod_submission_18-10-2024_mc/crabconfigs/mc_2018UL_dy_DYJetsToLL_LHEFilterPtZ-400To650.py \
+  /ceph/$(whoami)/test_crab_nanoaod_submission_18-10-2024_mc/crabconfigs/mc_2018UL_dy_DYJetsToLL_LHEFilterPtZ-650ToInf.py \
+  /ceph/$(whoami)/test_crab_nanoaod_submission_18-10-2024_mc/crabconfigs/mc_2018UL_ttbar_TTToSemiLeptonic.py \
+  /ceph/$(whoami)/test_crab_nanoaod_submission_18-10-2024_mc/crabconfigs/mc_2018UL_wjets_WJetsToLNu.py
+```
