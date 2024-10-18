@@ -12,7 +12,9 @@
 
 ### data:
 
-Tested locally on one input file with about 35k events, and there weren't any memory leaks visible. Something like 2.5 GB memory was used usually with 8 threads and 8 streams. Runtime for this was around half an hour. Used these values to have a good estimate for the `crab3` jobs.
+Tested locally on one input file with about 35k events, and there weren't any memory leaks visible.
+Something like 2.5 GB memory was used usually with 8 threads and 8 streams.
+Runtime for this was around half an hour. Used these values to have a good estimate for the `crab3` jobs.
 
 Final call:
 
@@ -27,7 +29,13 @@ Final call:
 
 ### mc:
 
-Tested locally on one input file with about 30k events, and unfortunately, there was a memory leak. Something like 15 GB memory was used usually with 8 threads and 8 streams. Desided to go for a `EventAwareLumiBased` splitting with 15k events to be processed. This reduces the runtime to something like an hour. To be safe, choosing 2 hours as maximum runtime. This will lead to a lot of and extremely small output files. To be checked, whether this impacts the performance later on.
+Tested locally on one input file with about 30k events, and unfortunately, there was a memory leak.
+Something like 15 GB memory was used with 8 threads and 8 streams.
+Desided to go for an `EventAwareLumiBased` splitting with 10k events to be processed.
+This reduces the runtime to something like an hour and memory to about 5 GB.
+To be safe, choosing 2 hours as maximum runtime and 10 GB as maximum memory.
+This will lead to a lot of and extremely small output files.
+To be checked, whether this impacts the performance later on when these datasets are used for analysis.
 
 Final call:
 
@@ -37,7 +45,7 @@ Final call:
   --conditions configuration/conditions.yaml \
   --cmsdriver configuration/cmsdriver_nanoaod_specifics.yaml \
   --nThreads 8 --numCores 8 \
-  --maxMemoryMBperCore 1000 --publication --splitting FileBased --unitsPerJob 15 --maxJobRuntimeMin 1250
+  --maxMemoryMBperCore 1250 --publication --splitting EventAwareLumiBased --unitsPerJob 10000 --maxJobRuntimeMin 120
 ```
 
 ## Managing of crab tasks call
