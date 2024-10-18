@@ -9,6 +9,7 @@ import pathlib
 import importlib.util
 import shutil
 import random
+import ast
 
 import CRABClient
 from CRABAPI.RawCommand import crabCommand
@@ -88,9 +89,9 @@ async def worker(queue, args, worker_id):
 
         cfg = load_config(cfgpath)
         cfg_directory = os.path.join(cfg.General.workArea, "crab_" + cfg.General.requestName)
+        res = None
         if not os.path.isdir(cfg_directory):
             logger.info(f"Submitting {cfgpath}")
-            res = None
             while not res:
                 res = await submit(cfg, logger)
                 await asyncio.sleep(10)
@@ -121,7 +122,9 @@ async def worker(queue, args, worker_id):
                         resub = await resubmit(cfg_directory, logger, **kwargs)
                         await asyncio.sleep(10)
             await asyncio.sleep(900)
-
+        logger.info(f"Task {cfg_directory} finished. Output datasets:")
+        for dataset in ast.literal_eval(res["outdatasets"]):
+            logger.info(f"\t{dataset}")
         queue.task_done()
 
 async def main():
