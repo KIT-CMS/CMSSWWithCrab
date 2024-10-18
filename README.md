@@ -1,6 +1,9 @@
 # CMSSWWithCrab
 Lightweight setup to submit CMSSW jobs with Crab for large-scale production
 
+In the following, you will find some general description on the package.
+For explicit production examples, please have a look into the [production_examples](production_examples) folder.
+
 ## Prerequisites
 
 A valid `CMSSW` checkout and environment. Can be obtained via:
