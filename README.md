@@ -81,3 +81,19 @@ For [`create_configs.py`](create_configs.py), the following were found of import
 ```
 ## Managing multiple crab3 tasks
 
+After all required `crab3` configuration files were created as expected, you can proceed managing their submission.
+For that purpose, the script [`crab_manager.py`](crab_manager.py) was designed. It processes a list of `crab3` configs, with up to 5 workers asynchronously in parallel, based on a queue concept. The workflow is as follows:
+
+1) After getting a `crab3` config from the queue, and in case the task directory assigned to this `crab3` config does not exist, the submission of this task is executed. After that, the task directory is available and properly set.
+2) For a properly created task directory, the status is queried regularly, checking the number of all, intermediate, (idle and running), finished, failed, and published jobs.
+3) In case failed jobs are encountered, and there aren't any intermediate jobs left, a resubmission attempt could be initiated, if at least one of the options `--maxmemory` and `--maxjobruntime` were specified, when starting `./crab_manager.py`. Please be careful when resubmitting to avoid too many attempts by paying attention to specify good values for these two options.
+4) If everything was processed successfully, it is expected, that numbers of all, finished, and published jobs are equal. In that, case the name of the published dataset is printed, and the `crab3` task is considered as done.
+5) If the queue is not empty, the next `crab3` config is taken by the worker to be processed.
+
+### Example call:
+
+```bash
+./crab_manager.py --crab-config-pattern ~/crab_work_dir/crabconfigs/data_2018UL_singlemuon_SingleMuon_Run2018*.py \
+  --maxjobruntime 1300 \
+  --maxmemory 8000
+```
