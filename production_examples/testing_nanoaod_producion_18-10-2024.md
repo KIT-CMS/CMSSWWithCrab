@@ -31,7 +31,7 @@ Final call:
 
 Tested locally on one input file with about 30k events, and unfortunately, there was a memory leak.
 Something like 15 GB memory was used with 8 threads and 8 streams.
-Desided to go for an `EventAwareLumiBased` splitting with 10k events to be processed.
+Decided to go for an `EventAwareLumiBased` splitting with 10k events to be processed.
 This reduces the runtime to something like an hour and memory to about 5 GB.
 To be safe, choosing 2 hours as maximum runtime and 10 GB as maximum memory.
 This will lead to a lot of and extremely small output files.
