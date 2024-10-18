@@ -103,6 +103,7 @@ async def worker(queue, args, worker_id):
                     "maxjobruntime": args.maxjobruntime,
                 }.items() if v is not None}
                 if n_intermediate == 0 and n_failed > 0 and kwargs:
+                    logger.info(f"Resubmitting task for {cfg_directory}")
                     resub = None
                     while not resub:
                         resub = await resubmit(cfg_directory, logger, **kwargs)
