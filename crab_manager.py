@@ -1,6 +1,5 @@
 #! /usr/bin/env python3
 
-import yaml
 import os
 import glob
 import asyncio
@@ -8,8 +7,7 @@ import logging
 import argparse
 import pathlib
 import importlib.util
-import json
-import time
+import shutil
 
 import CRABClient
 from CRABAPI.RawCommand import crabCommand
@@ -41,6 +39,8 @@ async def submit(config, logger):
         return await loop.run_in_executor(None, lambda: crabCommand('submit', config=config))
     except Exception as e:
         logger.error(f"Failed submitting task:\n{e}")
+        logger.debug(f"Cleaning up config directory {config.General.workArea}")
+        shutil.rmtree(config.General.workArea)
         return None
 
 async def status(cfg_dir, logger):
