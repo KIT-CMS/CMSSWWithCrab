@@ -61,9 +61,13 @@ async def resubmit(cfg_dir, logger, **kwargs):
 
 async def worker(queue, args, worker_id):
     # Set up logging for this worker
+    logs_directory = pathlib.Path("logs")
+    logs_directory.mkdir(mode=0o755,parents=True,exist_ok=True)
+    logs_path = logs_directory / f'worker_{worker_id}.log'
+
     logger = logging.getLogger(f'worker_{worker_id}')
     logger.setLevel(logging.DEBUG)
-    handler = logging.FileHandler(f'worker_{worker_id}.log')
+    handler = logging.FileHandler(str(logs_path))
     handler.setLevel(logging.DEBUG)
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     handler.setFormatter(formatter)
