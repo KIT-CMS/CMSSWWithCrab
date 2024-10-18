@@ -8,6 +8,7 @@ import argparse
 import pathlib
 import importlib.util
 import shutil
+import random
 
 import CRABClient
 from CRABAPI.RawCommand import crabCommand
@@ -36,6 +37,8 @@ def load_config(config_path):
 async def submit(config, logger):
     loop = asyncio.get_event_loop()
     try:
+        sleep_duration = random.randint(1,60)
+        await asyncio.sleep(sleep_duration)
         return await loop.run_in_executor(None, lambda: crabCommand('submit', config=config))
     except Exception as e:
         logger.error(f"Failed submitting task:\n{e}")
@@ -47,6 +50,8 @@ async def submit(config, logger):
 async def status(cfg_dir, logger):
     loop = asyncio.get_event_loop()
     try:
+        sleep_duration = random.randint(1,60)
+        await asyncio.sleep(sleep_duration)
         return await loop.run_in_executor(None, lambda: crabCommand('status', dir=cfg_dir))
     except Exception as e:
         logger.error(f"Failed querying status of task:\n{e}")
@@ -55,6 +60,8 @@ async def status(cfg_dir, logger):
 async def resubmit(cfg_dir, logger, **kwargs):
     loop = asyncio.get_event_loop()
     try:
+        sleep_duration = random.randint(1,60)
+        await asyncio.sleep(sleep_duration)
         return await loop.run_in_executor(None, lambda: crabCommand('resubmit', dir=cfg_dir, **kwargs))
     except Exception as e:
         logger.error(f"Failed resubmitting task:\n{e}")
