@@ -55,14 +55,14 @@ Initial calls will be presented in the following, which can be adapted further f
 ### data:
 
 ```bash
-./crab_manager --crab-config-pattern \
+./crab_manager.py --crab-config-pattern \
   /ceph/$(whoami)/test_crab_nanoaod_submission_18-10-2024_data/crabconfigs/data_2018UL_singlemuon_SingleMuon_Run2018*.py
 ```
 
 ### mc:
 
 ```bash
-./crab_manager --crab-config-pattern \
+./crab_manager.py --crab-config-pattern \
   /ceph/$(whoami)/test_crab_nanoaod_submission_18-10-2024_mc/crabconfigs/mc_2018UL_dy_DYJetsToLL_LHEFilterPtZ-250To400.py \
   /ceph/$(whoami)/test_crab_nanoaod_submission_18-10-2024_mc/crabconfigs/mc_2018UL_dy_DYJetsToLL_LHEFilterPtZ-400To650.py \
   /ceph/$(whoami)/test_crab_nanoaod_submission_18-10-2024_mc/crabconfigs/mc_2018UL_dy_DYJetsToLL_LHEFilterPtZ-650ToInf.py \
