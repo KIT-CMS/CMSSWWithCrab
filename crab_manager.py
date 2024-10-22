@@ -32,7 +32,7 @@ def parse_args():
     parser.add_argument("--crab-config-patterns", nargs='+', required=True, help="List of path patterns to the crab configuration files, processed with glob")
     parser.add_argument("--maxmemory", default=None, help="Maximum memory threshold in MB for resubmission passed to crab")
     parser.add_argument("--maxjobruntime", default=None, help="Maximum job runtime threshold in minutes for resubmission passed to crab")
-    parser.add_argument("--nworkers", default=5, help="Number of workers to manage the crab tasks simultaneously")
+    parser.add_argument("--nworkers", default=5, type=int, help="Number of workers to manage the crab tasks simultaneously")
     parser.add_argument("--sitewhitelist",default=None,help="Comma-separated list of sites to exclusively run your jobs on.")
     parser.add_argument("--siteblacklist",default=None,help="Comma-separated list of sites to avoid running your jobs there.")
 
