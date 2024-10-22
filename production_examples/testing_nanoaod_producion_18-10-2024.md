@@ -26,7 +26,7 @@ Final call:
   --conditions configuration/conditions.yaml \
   --cmsdriver configuration/cmsdriver_nanoaod_specifics.yaml \
   --nThreads 8 --numCores 8 \
-  --maxMemoryMBperCore 1000 --publication --splitting FileBased --unitsPerJob 15 --maxJobRuntimeMin 1250
+  --maxMemoryMBperCore 750 --publication --splitting FileBased --unitsPerJob 15 --maxJobRuntimeMin 1250
 ```
 
 ### mc:
