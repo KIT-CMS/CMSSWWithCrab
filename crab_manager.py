@@ -43,7 +43,7 @@ def load_config(config_path):
     spec.loader.exec_module(module)
     return module.config
 
-async def submit(config, logger):
+async def submit(config, logger, nworkers):
     loop = asyncio.get_event_loop()
     try:
         sleep_duration = random.randint(0,12*nworkers)
