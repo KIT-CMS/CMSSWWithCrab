@@ -140,14 +140,14 @@ async def worker(queue, args, worker_id, nworkers):
                     while not resub:
                         resub = await resubmit(cfg_directory, logger, nworkers, **kwargs)
                         await asyncio.sleep(10)
-            await asyncio.sleep(900)
+            await asyncio.sleep(0 if n_all== n_finished and n_all == n_published else 900)
         logger.info(f"Task {cfg_directory} finished. Output datasets:")
         for dataset in ast.literal_eval(res["outdatasets"]):
             try:
                 das_output = await run_dasgoclient_query(dataset, "prod/phys03")
                 das_input = await run_dasgoclient_query(cfg.Data.inputDataset, "prod/global")
-                nevents_input = das_input[2]['dataset']['nevents']
-                nevents_output = das_output[2]['dataset']['nevents']
+                nevents_input = das_input[2]['dataset'][0]['nevents']
+                nevents_output = das_output[2]['dataset'][0]['nevents']
                 if nevents_input != nevents_output:
                     logger.error(f"Numbers of events in input {cfg.Data.inputDataset} ({nevents_input}) does not match output {dataset}: {nevents_output}. Crab task FAILED.")
                 else:
