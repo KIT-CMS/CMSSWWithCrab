@@ -6,7 +6,7 @@
 * cmsdriver settings for nanoAOD: [`configuration/cmsdriver_nanoaod_specifics.yaml`](configuration/cmsdriver_nanoaod_specifics.yaml)
 * datasets: [`configuration/datasets_miniaod_boostedhtt.yaml`](configuration/datasets_miniaod_boostedhtt.yaml)
 * crab config template: [`crab_configuration/crab_template.py`](crab_configuration/crab_template.py)
-* CMSSW release: ~~CMSSW_14_2_0_pre2~~ (memoery leak!!!) CMSSW_13_0_21
+* CMSSW release: ~~CMSSW_14_2_0_pre2~~ (**memory leak!!!**) CMSSW_13_0_21
 
 <details><summary>Deprecated due to CMSSW_14_2_0_pre2 issues</summary>
 
@@ -73,3 +73,31 @@ Initial calls will be presented in the following, which can be adapted further f
 ```
 
 </details>
+
+## Creation of CMSSW and Crab configs call
+
+Tested locally on one input file with about 48k events, and there weren't any memory leaks visible.
+Something like 2.5 GB memory was used usually with 8 threads and 8 streams.
+Runtime for this was around half an hour. Used these values to have a good estimate for the `crab3` jobs.
+
+Final call:
+
+```bash
+./create_configs.py --work-directory /ceph/$(whoami)/test_crab_nanoaod_submission_18-10-2024/ \
+  --datasets configuration/datasets_miniaod_boostedhtt.yaml \
+  --conditions configuration/conditions.yaml \
+  --cmsdriver configuration/cmsdriver_nanoaod_specifics.yaml \
+  --nThreads 8 --numCores 8 \
+  --maxMemoryMBperCore 1000 --publication --splitting EventAwareLumiBased --unitsPerJob 1000000 --maxJobRuntimeMin 900
+```
+
+## Managing of crab tasks call
+
+Initial calls will be presented in the following, which can be adapted further for resubmission supplemented with available resubmission options (see `./create_configs.py --help`).
+
+### data:
+
+```bash
+./crab_manager.py --crab-config-pattern \
+  /ceph/$(whoami)/test_crab_nanoaod_submission_18-10-2024/crabconfigs/*.py
+```
