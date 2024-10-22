@@ -15,6 +15,7 @@ import importlib.util
 import shutil
 import random
 import ast
+import json
 
 import CRABClient
 from CRABAPI.RawCommand import crabCommand
@@ -76,6 +77,14 @@ async def resubmit(cfg_dir, logger, nworkers, **kwargs):
         logger.error(f"Failed resubmitting task:\n{e}")
         return None
 
+async def run_dasgoclient_query(dataset, instance):
+    command = ["dasgoclient", "-query", f"dataset dataset={dataset} instance={instance}", "-json"]
+    process = await asyncio.create_subprocess_exec(*command, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE)
+    stdout, stderr = await process.communicate()
+    if process.returncode != 0:
+        raise RuntimeError(f"Failed to query DAS: {stderr.decode().strip()}")
+    return json.loads(stdout.decode().strip())
+
 async def worker(queue, args, worker_id, nworkers):
     # Set up logging for this worker
     logs_directory = pathlib.Path("logs")
@@ -134,7 +143,17 @@ async def worker(queue, args, worker_id, nworkers):
             await asyncio.sleep(900)
         logger.info(f"Task {cfg_directory} finished. Output datasets:")
         for dataset in ast.literal_eval(res["outdatasets"]):
-            logger.info(f"\t{dataset}")
+            try:
+                das_output = await run_dasgoclient_query(dataset, "prod/phys03")
+                das_input = await run_dasgoclient_query(cfg.Data.inputDataset, "prod/global")
+                nevents_input = das_input[2]['dataset']['nevents']
+                nevents_output = das_output[2]['dataset']['nevents']
+                if nevents_input != nevents_output:
+                    logger.error(f"Numbers of events in input {cfg.Data.inputDataset} ({nevents_input}) does not match output {dataset}: {nevents_output}. Crab task FAILED.")
+                else:
+                    logger.info(f"\t{dataset}: {nevents_output} events, consistent with input dataset")
+            except Exception as e:
+                logger.error(f"Failed to query DAS for dataset {dataset} and its parent:\n{e}")
         queue.task_done()
 
 async def main():
@@ -159,7 +178,7 @@ async def main():
     await queue.join()
 
     # Stop workers
-    for _ in range(num_workers):
+    for _ in range(nworkers):
         await queue.put(None)
     await asyncio.gather(*workers)
 
