@@ -1,5 +1,10 @@
 #! /usr/bin/env python3
 
+# TODO:
+# Add a check of for the input and output datasets about number of events.
+# This would allow to justify, that the production was completely successful.
+# Possible tool: DBS client bindings
+
 import os
 import glob
 import asyncio
@@ -26,6 +31,7 @@ def parse_args():
     parser.add_argument("--crab-config-patterns", nargs='+', required=True, help="List of path patterns to the crab configuration files, processed with glob")
     parser.add_argument("--maxmemory", default=None, help="Maximum memory threshold in MB for resubmission passed to crab")
     parser.add_argument("--maxjobruntime", default=None, help="Maximum job runtime threshold in minutes for resubmission passed to crab")
+    parser.add_argument("--nworkers", default=5, help="Number of workers to manage the crab tasks simultaneously")
 
     return parser.parse_args()
 
@@ -38,7 +44,7 @@ def load_config(config_path):
 async def submit(config, logger):
     loop = asyncio.get_event_loop()
     try:
-        sleep_duration = random.randint(1,60)
+        sleep_duration = random.randint(0,12*nworkers)
         await asyncio.sleep(sleep_duration)
         return await loop.run_in_executor(None, lambda: crabCommand('submit', config=config))
     except Exception as e:
@@ -48,27 +54,27 @@ async def submit(config, logger):
         shutil.rmtree(cfg_directory)
         return None
 
-async def status(cfg_dir, logger):
+async def status(cfg_dir, logger, nworkers):
     loop = asyncio.get_event_loop()
     try:
-        sleep_duration = random.randint(1,60)
+        sleep_duration = random.randint(0,12*nworkers)
         await asyncio.sleep(sleep_duration)
         return await loop.run_in_executor(None, lambda: crabCommand('status', dir=cfg_dir))
     except Exception as e:
         logger.error(f"Failed querying status of task:\n{e}")
         return None
 
-async def resubmit(cfg_dir, logger, **kwargs):
+async def resubmit(cfg_dir, logger, nworkers, **kwargs):
     loop = asyncio.get_event_loop()
     try:
-        sleep_duration = random.randint(1,60)
+        sleep_duration = random.randint(0,12*nworkers)
         await asyncio.sleep(sleep_duration)
         return await loop.run_in_executor(None, lambda: crabCommand('resubmit', dir=cfg_dir, **kwargs))
     except Exception as e:
         logger.error(f"Failed resubmitting task:\n{e}")
         return None
 
-async def worker(queue, args, worker_id):
+async def worker(queue, args, worker_id, nworkers):
     # Set up logging for this worker
     logs_directory = pathlib.Path("logs")
     logs_directory.mkdir(mode=0o755,parents=True,exist_ok=True)
@@ -93,7 +99,7 @@ async def worker(queue, args, worker_id):
         if not os.path.isdir(cfg_directory):
             logger.info(f"Submitting {cfgpath}")
             while not res:
-                res = await submit(cfg, logger)
+                res = await submit(cfg, logger, nworkers)
                 await asyncio.sleep(10)
             await asyncio.sleep(600)
 
@@ -102,7 +108,7 @@ async def worker(queue, args, worker_id):
         n_all = -3
         while n_all != n_finished or n_all != n_published:
             logger.info(f"Checking task status for {cfg_directory}")
-            res = await status(cfg_directory, logger)
+            res = await status(cfg_directory, logger, nworkers)
             if res:
                 #json.dump(res, open("res.json", "w"), indent=2, sort_keys=True)
                 n_all = sum([res["jobsPerStatus"][state] for state in res["jobsPerStatus"].keys()])
@@ -119,7 +125,7 @@ async def worker(queue, args, worker_id):
                     logger.info(f"Resubmitting task for {cfg_directory}")
                     resub = None
                     while not resub:
-                        resub = await resubmit(cfg_directory, logger, **kwargs)
+                        resub = await resubmit(cfg_directory, logger, nworkers, **kwargs)
                         await asyncio.sleep(10)
             await asyncio.sleep(900)
         logger.info(f"Task {cfg_directory} finished. Output datasets:")
@@ -138,8 +144,8 @@ async def main():
     queue = asyncio.Queue()
 
     # Create worker tasks
-    num_workers = min(len(config_paths), 5)  # Adjust the number of workers as needed
-    workers = [asyncio.create_task(worker(queue, args, i)) for i in range(num_workers)]
+    nworkers = min(len(config_paths), args.nworkers)
+    workers = [asyncio.create_task(worker(queue, args, i, nworkers)) for i in range(nworkers)]
 
     # Enqueue config paths
     for cfgpath in config_paths:
