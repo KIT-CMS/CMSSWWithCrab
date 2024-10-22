@@ -32,6 +32,8 @@ def parse_args():
     parser.add_argument("--maxmemory", default=None, help="Maximum memory threshold in MB for resubmission passed to crab")
     parser.add_argument("--maxjobruntime", default=None, help="Maximum job runtime threshold in minutes for resubmission passed to crab")
     parser.add_argument("--nworkers", default=5, help="Number of workers to manage the crab tasks simultaneously")
+    parser.add_argument("--sitewhitelist",default=None,help="Comma-separated list of sites to exclusively run your jobs on.")
+    parser.add_argument("--siteblacklist",default=None,help="Comma-separated list of sites to avoid running your jobs there.")
 
     return parser.parse_args()
 
@@ -120,6 +122,8 @@ async def worker(queue, args, worker_id, nworkers):
                 kwargs = {k: v for k, v in {
                     "maxmemory": args.maxmemory,
                     "maxjobruntime": args.maxjobruntime,
+                    "sitewhitelist": args.sitewhitelist,
+                    "siteblacklist": args.siteblacklist,
                 }.items() if v is not None}
                 if n_intermediate == 0 and n_failed > 0 and kwargs:
                     logger.info(f"Resubmitting task for {cfg_directory}")
