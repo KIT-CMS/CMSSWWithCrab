@@ -6,7 +6,9 @@
 * cmsdriver settings for nanoAOD: [`configuration/cmsdriver_nanoaod_specifics.yaml`](configuration/cmsdriver_nanoaod_specifics.yaml)
 * datasets: [`configuration/datasets_miniaod_boostedhtt.yaml`](configuration/datasets_miniaod_boostedhtt.yaml)
 * crab config template: [`crab_configuration/crab_template.py`](crab_configuration/crab_template.py)
-* CMSSW release: CMSSW_14_2_0_pre2
+* CMSSW release: ~~CMSSW_14_2_0_pre2~~ (memoery leak!!!) CMSSW_13_0_21
+
+<details><summary>Deprecated due to CMSSW_14_2_0_pre2 issues</summary>
 
 ## Creation of CMSSW and Crab configs call
 
@@ -69,3 +71,5 @@ Initial calls will be presented in the following, which can be adapted further f
   /ceph/$(whoami)/test_crab_nanoaod_submission_18-10-2024_mc/crabconfigs/mc_2018UL_ttbar_TTToSemiLeptonic.py \
   /ceph/$(whoami)/test_crab_nanoaod_submission_18-10-2024_mc/crabconfigs/mc_2018UL_wjets_WJetsToLNu.py
 ```
+
+</details>
