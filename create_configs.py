@@ -44,6 +44,8 @@ def parse_args():
     crab.add_argument("--publication",action="store_true",help="Flag to decide, whether to publish crab output dataset")
     crab.add_argument("--splitting",choices=["Automatic", "FileBased", "LumiBased", "EventAwareLumiBased"],default="Automatic",help="Choice of splitting of the task into jobs.")
     crab.add_argument("--unitsPerJob",type=int,default=720,help="Rough number of files (FileBased), luminosity sections (LumiBased), or events (EventAwareLumiBased) to have per job, depending on the corresponding splitting. In case of Automatic splitting: target runtime in minutes with a minimum of 180.")
+    crab.add_argument("--siteWhitelist",nargs='*',help="List of sites to exclusively run your jobs on.")
+    crab.add_argument("--siteBlacklist",nargs='*',help="List of sites to avoid running your jobs there.")
 
     return parser.parse_args()
 
@@ -96,6 +98,8 @@ def prepare(args):
     args["crab"].Data.publication = args["publication"]
     args["crab"].Data.splitting = args["splitting"]
     args["crab"].Data.unitsPerJob = args["unitsPerJob"]
+    args["crab"].Site.whitelist = args["siteWhitelist"]
+    args["crab"].Site.blacklist = args["siteBlacklist"]
     print("\nGeneral crab configuration:")
     print(args["crab"])
 
