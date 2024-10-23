@@ -82,8 +82,7 @@ async def submit(config, logger, nworkers):
         cfg_directory = os.path.join(
             config.General.workArea, "crab_" + config.General.requestName
         )
-        #logger.debug(f"Cleaning up config directory {cfg_directory}")
-        shutil.rmtree(cfg_directory)
+        logger.debug(f"Please check {cfg_directory} yourself, and if needed, kill corresponding task and remove directory. After that, please restart the script to trigger submission again.")
         return None
 
 
@@ -169,8 +168,9 @@ async def worker(
                 logger.info(
                     f"Task directory exists: {cfg_directory}. Considering as submitted."
                 )
-            # Enqueue the task for status checking
-            await status_queue.put(cfgpath)
+            # Enqueue the task for status checking, if successfully submitted
+            if res:
+                await status_queue.put(cfgpath)
 
         else:
             n_published = -1
