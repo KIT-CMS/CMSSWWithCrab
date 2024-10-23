@@ -168,6 +168,7 @@ async def worker(
                 logger.info(
                     f"Task directory exists: {cfg_directory}. Considering as submitted."
                 )
+                res = True
             # Enqueue the task for status checking, if successfully submitted
             if res:
                 await status_queue.put(cfgpath)
