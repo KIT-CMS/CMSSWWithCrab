@@ -209,7 +209,7 @@ async def worker(
                         if v is not None
                     }
                     if n_intermediate == 0 and n_failed > 0 and kwargs:
-                        logger.info(f"\tResubmitting task for {cfg_directory}")
+                        logger.info(f"\tResubmitting task for {cfg_directory} with resubmission arguments: {kwargs}")
                         resub = await resubmit(
                             cfg_directory, logger, nworkers, **kwargs
                         )
