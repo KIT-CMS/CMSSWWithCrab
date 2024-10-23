@@ -82,7 +82,9 @@ async def submit(config, logger, nworkers):
         cfg_directory = os.path.join(
             config.General.workArea, "crab_" + config.General.requestName
         )
-        logger.debug(f"Please check {cfg_directory} yourself, and if needed, kill corresponding task and remove directory. After that, please restart the script to trigger submission again.")
+        logger.debug(
+            f"Please check {cfg_directory} yourself, and if needed, kill corresponding task and remove directory. After that, please restart the script to trigger submission again."
+        )
         return None
 
 
