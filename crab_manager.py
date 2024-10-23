@@ -146,9 +146,19 @@ async def worker(queue, args, worker_id, nworkers):
             try:
                 das_output = await run_dasgoclient_query(dataset, "prod/phys03")
                 das_input = await run_dasgoclient_query(cfg.Data.inputDataset, "prod/global")
-                nevents_input = das_input[2]['dataset'][0]['nevents']
-                nevents_output = das_output[2]['dataset'][0]['nevents']
-                if nevents_input != nevents_output:
+                nevents_output = None
+                nevents_input = None
+                for o in das_output:
+                    for do in o['dataset']:
+                        if "nevents" in do:
+                            nevents_output = do['nevents']
+                            break
+                for i in das_input:
+                    for di in i['dataset']:
+                        if "nevents" in di:
+                            nevents_input = di['nevents']
+                            break
+                if nevents_input is None or nevents_output is None or nevents_input != nevents_output:
                     logger.error(f"Numbers of events in input {cfg.Data.inputDataset} ({nevents_input}) does not match output {dataset}: {nevents_output}. Crab task FAILED.")
                 else:
                     logger.info(f"\t{dataset}: {nevents_output} events, consistent with input dataset")
