@@ -73,15 +73,16 @@ async def submit(config, logger, nworkers):
     try:
         sleep_duration = random.randint(0, 12 * nworkers)
         await asyncio.sleep(sleep_duration)
-        return await loop.run_in_executor(
+        res = await loop.run_in_executor(
             None, lambda: crabCommand("submit", config=config)
         )
+        return res
     except Exception as e:
         logger.error(f"Failed submitting task:\n{e}")
         cfg_directory = os.path.join(
             config.General.workArea, "crab_" + config.General.requestName
         )
-        logger.debug(f"Cleaning up config directory {cfg_directory}")
+        #logger.debug(f"Cleaning up config directory {cfg_directory}")
         shutil.rmtree(cfg_directory)
         return None
 
@@ -91,9 +92,10 @@ async def status(cfg_dir, logger, nworkers):
     try:
         sleep_duration = random.randint(0, 12 * nworkers)
         await asyncio.sleep(sleep_duration)
-        return await loop.run_in_executor(
+        res = await loop.run_in_executor(
             None, lambda: crabCommand("status", dir=cfg_dir)
         )
+        return res
     except Exception as e:
         logger.error(f"Failed querying status of task:\n{e}")
         return None
@@ -104,9 +106,10 @@ async def resubmit(cfg_dir, logger, nworkers, **kwargs):
     try:
         sleep_duration = random.randint(0, 12 * nworkers)
         await asyncio.sleep(sleep_duration)
-        return await loop.run_in_executor(
+        res = await loop.run_in_executor(
             None, lambda: crabCommand("resubmit", dir=cfg_dir, **kwargs)
         )
+        return res
     except Exception as e:
         logger.error(f"Failed resubmitting task:\n{e}")
         return None
