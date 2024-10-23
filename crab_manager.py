@@ -208,12 +208,9 @@ async def worker(
                     }
                     if n_intermediate == 0 and n_failed > 0 and kwargs:
                         logger.info(f"Resubmitting task for {cfg_directory}")
-                        resub = None
-                        while not resub:
-                            resub = await resubmit(
-                                cfg_directory, logger, nworkers, **kwargs
-                            )
-                            await asyncio.sleep(10)
+                        resub = await resubmit(
+                            cfg_directory, logger, nworkers, **kwargs
+                        )
                 await asyncio.sleep(
                     0 if n_all == n_finished and n_all == n_published else 900
                 )
