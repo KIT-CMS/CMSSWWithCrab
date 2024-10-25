@@ -213,7 +213,9 @@ async def worker(
                         if v is not None
                     }
                     if n_intermediate == 0 and n_failed > 0 and kwargs:
-                        logger.info(f"\tResubmitting task for {cfg_directory} with resubmission arguments: {kwargs}")
+                        logger.info(
+                            f"\tResubmitting task for {cfg_directory} with resubmission arguments: {kwargs}"
+                        )
                         resub = await resubmit(
                             cfg_directory, logger, nworkers, **kwargs
                         )
@@ -223,10 +225,14 @@ async def worker(
             logger.info(f"Task {cfg_directory} finished. Checking output datasets.")
             for dataset in ast.literal_eval(res["outdatasets"]):
                 try:
-                    das_output = await run_dasgoclient_query("datset", dataset, "prod/phys03", True)
-                    das_output_files = await run_dasgoclient_query("file", dataset, "prod/phys03", False)
+                    das_output = await run_dasgoclient_query(
+                        "datset", dataset, "prod/phys03", True
+                    )
+                    das_output_files = await run_dasgoclient_query(
+                        "file", dataset, "prod/phys03", False
+                    )
                     das_input = await run_dasgoclient_query(
-                        "dataset",cfg.Data.inputDataset, "prod/global",True
+                        "dataset", cfg.Data.inputDataset, "prod/global", True
                     )
                     nevents_output = None
                     nevents_input = None

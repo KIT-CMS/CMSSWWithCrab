@@ -11,6 +11,12 @@ import datetime
 from crab_configuration.crab_template import config
 
 
+# TODO:
+# Introduce an option --exclude-sites-by-pattern,
+# which leads to a more sophisticated choice of site where to run
+# Based on dataset placement, to be checked with dasgoclient command
+
+
 def parse_args():
     parser = argparse.ArgumentParser(
         description="Script to prepare a CMSSW production with crab",
