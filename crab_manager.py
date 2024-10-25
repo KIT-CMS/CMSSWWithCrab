@@ -233,7 +233,7 @@ async def worker(
                     nevents_output_from_files = None
                     c = r.TChain("Events")
                     for f in das_output_files.split("\n"):
-                        c.Add("root://cms-xrd-global.cern.ch/" + c.strip())
+                        c.Add("root://cms-xrd-global.cern.ch/" + f.strip())
                     nevents_output_from_files = c.GetEntries()
                     for o in das_output:
                         for do in o["dataset"]:
