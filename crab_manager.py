@@ -11,6 +11,7 @@ import shutil
 import random
 import ast
 import json
+import ROOT as r
 
 import CRABClient
 from CRABAPI.RawCommand import crabCommand
@@ -116,12 +117,12 @@ async def resubmit(cfg_dir, logger, nworkers, **kwargs):
         return None
 
 
-async def run_dasgoclient_query(dataset, instance):
+async def run_dasgoclient_query(querytype, dataset, instance, usejson):
     command = [
         "dasgoclient",
         "-query",
-        f"dataset dataset={dataset} instance={instance}",
-        "-json",
+        f"{querytype} dataset={dataset} instance={instance}",
+        "-json" if usejson else "",
     ]
     process = await asyncio.create_subprocess_exec(
         *command, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE
@@ -129,7 +130,10 @@ async def run_dasgoclient_query(dataset, instance):
     stdout, stderr = await process.communicate()
     if process.returncode != 0:
         raise RuntimeError(f"Failed to query DAS: {stderr.decode().strip()}")
-    return json.loads(stdout.decode().strip())
+    if usejson:
+        return json.loads(stdout.decode().strip())
+    else:
+        return stdout.decode().strip()
 
 
 async def worker(
@@ -216,15 +220,21 @@ async def worker(
                 await asyncio.sleep(
                     0 if n_all == n_finished and n_all == n_published else 900
                 )
-            logger.info(f"Task {cfg_directory} finished. Output datasets:")
+            logger.info(f"Task {cfg_directory} finished. Checking output datasets.")
             for dataset in ast.literal_eval(res["outdatasets"]):
                 try:
-                    das_output = await run_dasgoclient_query(dataset, "prod/phys03")
+                    das_output = await run_dasgoclient_query("datset", dataset, "prod/phys03", True)
+                    das_output_files = await run_dasgoclient_query("file", dataset, "prod/phys03", False)
                     das_input = await run_dasgoclient_query(
-                        cfg.Data.inputDataset, "prod/global"
+                        "dataset",cfg.Data.inputDataset, "prod/global",True
                     )
                     nevents_output = None
                     nevents_input = None
+                    nevents_output_from_files = None
+                    c = r.TChain("Events")
+                    for f in das_output_files.split("\n"):
+                        c.Add("root://cms-xrd-global.cern.ch/" + c.strip())
+                    nevents_output_from_files = c.GetEntries()
                     for o in das_output:
                         for do in o["dataset"]:
                             if "nevents" in do:
@@ -239,9 +249,14 @@ async def worker(
                         nevents_input is None
                         or nevents_output is None
                         or nevents_input != nevents_output
+                        or nevents_output_from_files != nevents_output
+                        or nevents_output_from_files != nevents_input
                     ):
                         logger.error(
-                            f"Numbers of events in input {cfg.Data.inputDataset} ({nevents_input}) does not match output {dataset}: {nevents_output}. Crab task FAILED."
+                            f"Numbers of events in input {cfg.Data.inputDataset} ({nevents_input}), output {dataset} ({nevents_output}), and output based on files ({nevents_output_from_files}) differ."
+                        )
+                        logger.error(
+                            "Crab task {cfg_directory} seems to be FAILED. Please investigate and if needed, recreate and resubmit the entire task"
                         )
                     else:
                         logger.info(
