@@ -262,7 +262,7 @@ async def worker(
                             f"Numbers of events in input {cfg.Data.inputDataset} ({nevents_input}), output {dataset} ({nevents_output}), and output based on files ({nevents_output_from_files}) differ."
                         )
                         logger.error(
-                            "Crab task {cfg_directory} seems to be FAILED. Please investigate and if needed, recreate and resubmit the entire task"
+                            f"Crab task {cfg_directory} seems to be FAILED. Please investigate and if needed, recreate and resubmit the entire task"
                         )
                     else:
                         logger.info(
