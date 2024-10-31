@@ -83,21 +83,75 @@ Runtime for this was around half an hour. Used these values to have a good estim
 Final call:
 
 ```bash
-./create_configs.py --work-directory /ceph/$(whoami)/test_crab_nanoaod_submission_18-10-2024/ \
+./create_configs.py --work-directory /ceph/$(whoami)/test_crab_nanoaod_submission_21-10-2024_prodreleasev12/ \
   --datasets configuration/datasets_miniaod_boostedhtt.yaml \
   --conditions configuration/conditions.yaml \
   --cmsdriver configuration/cmsdriver_nanoaod_specifics.yaml \
   --nThreads 8 --numCores 8 \
-  --maxMemoryMBperCore 750 --publication --splitting EventAwareLumiBased --unitsPerJob 1000000 --maxJobRuntimeMin 900
+  --maxMemoryMBperCore 500 --publication --splitting EventAwareLumiBased --unitsPerJob 1000000 --maxJobRuntimeMin 900
 ```
+
+### Adaptions during production campaign
+
+Due to some of the tasks being not processed well, changed the setup for a few larger datasets to:
+
+```bash
+./create_configs.py --work-directory /ceph/$(whoami)/test_crab_nanoaod_submission_21-10-2024_prodreleasev12_filebased/ \
+  --datasets configuration/datasets_miniaod_boostedhtt.yaml \
+  --conditions configuration/conditions.yaml \
+  --cmsdriver configuration/cmsdriver_nanoaod_specifics.yaml \
+  --nThreads 8 --numCores 8 \
+  --maxMemoryMBperCore 500 --publication --splitting FileBased --unitsPerJob 5 --maxJobRuntimeMin 900
+```
+
+ Consider switching to FileBased processing as an alternative, if needed.
 
 ## Managing of crab tasks call
 
 Initial calls will be presented in the following, which can be adapted further for resubmission supplemented with available resubmission options (see `./create_configs.py --help`).
 
-### data:
-
 ```bash
 ./crab_manager.py --crab-config-pattern \
-  /ceph/$(whoami)/test_crab_nanoaod_submission_18-10-2024/crabconfigs/*.py
+  /ceph/$(whoami)/test_crab_nanoaod_submission_21-10-2024_prodreleasev12*/crabconfigs/*.py
+```
+
+## Results
+
+The finished production campaign can be seen at CMS Grafana:
+
+https://monit-grafana.cern.ch/goto/h4P2U-ZNg?orgId=11
+
+The resulting datasets are (accessible via DAS webpage or `dasgoclient`, using `prod/phys03` DBS instance):
+
+```bash
+/SingleMuon/aakhmets-data_2018UL_singlemuon_SingleMuon_Run2018A_1729863731-00000000000000000000000000000000/USER
+/SingleMuon/aakhmets-data_2018UL_singlemuon_SingleMuon_Run2018B_1729599421-00000000000000000000000000000000/USER
+/SingleMuon/aakhmets-data_2018UL_singlemuon_SingleMuon_Run2018C_1730057166-00000000000000000000000000000000/USER
+/SingleMuon/aakhmets-data_2018UL_singlemuon_SingleMuon_Run2018D_1729599421-00000000000000000000000000000000/USER
+/WZTo2Q2L_mllmin4p0_TuneCP5_13TeV-amcatnloFXFX-pythia8/aakhmets-mc_2018UL_diboson_WZTo2Q2L_1729599421-00000000000000000000000000000000/USER
+/WZTo3LNu_TuneCP5_13TeV-amcatnloFXFX-pythia8/aakhmets-mc_2018UL_diboson_WZTo3LNu_1729599421-00000000000000000000000000000000/USER
+/ZZTo2Q2L_mllmin4p0_TuneCP5_13TeV-amcatnloFXFX-pythia8/aakhmets-mc_2018UL_diboson_ZZTo2Q2L_1729599421-00000000000000000000000000000000/USER
+/ZZTo4L_TuneCP5_13TeV_powheg_pythia8/aakhmets-mc_2018UL_diboson_ZZTo4L_1729599421-00000000000000000000000000000000/USER
+/DYJetsToLL_LHEFilterPtZ-100To250_MatchEWPDG20_TuneCP5_13TeV-amcatnloFXFX-pythia8/aakhmets-mc_2018UL_dy_DYJetsToLL_LHEFilterPtZ-100To250_1729599421-00000000000000000000000000000000/USER
+/DYJetsToLL_LHEFilterPtZ-250To400_MatchEWPDG20_TuneCP5_13TeV-amcatnloFXFX-pythia8/aakhmets-mc_2018UL_dy_DYJetsToLL_LHEFilterPtZ-250To400_1729599421-00000000000000000000000000000000/USER
+/DYJetsToLL_LHEFilterPtZ-400To650_MatchEWPDG20_TuneCP5_13TeV-amcatnloFXFX-pythia8/aakhmets-mc_2018UL_dy_DYJetsToLL_LHEFilterPtZ-400To650_1729599421-00000000000000000000000000000000/USER
+/DYJetsToLL_LHEFilterPtZ-650ToInf_MatchEWPDG20_TuneCP5_13TeV-amcatnloFXFX-pythia8/aakhmets-mc_2018UL_dy_DYJetsToLL_LHEFilterPtZ-650ToInf_1729599421-00000000000000000000000000000000/USER
+/QCD_Pt_1000to1400_TuneCP5_13TeV_pythia8/aakhmets-mc_2018UL_qcd_QCD_Pt_1000to1400_1729599421-00000000000000000000000000000000/USER
+/QCD_Pt_1400to1800_TuneCP5_13TeV_pythia8/aakhmets-mc_2018UL_qcd_QCD_Pt_1400to1800_1729599421-00000000000000000000000000000000/USER
+/QCD_Pt_170to300_TuneCP5_13TeV_pythia8/aakhmets-mc_2018UL_qcd_QCD_Pt_170to300_1729599421-00000000000000000000000000000000/USER
+/QCD_Pt_1800to2400_TuneCP5_13TeV_pythia8/aakhmets-mc_2018UL_qcd_QCD_Pt_1800to2400_1729599421-00000000000000000000000000000000/USER
+/QCD_Pt_2400to3200_TuneCP5_13TeV_pythia8/aakhmets-mc_2018UL_qcd_QCD_Pt_2400to3200_1729599421-00000000000000000000000000000000/USER
+/QCD_Pt_300to470_TuneCP5_13TeV_pythia8/aakhmets-mc_2018UL_qcd_QCD_Pt_300to470_1729599421-00000000000000000000000000000000/USER
+/QCD_Pt_3200toInf_TuneCP5_13TeV_pythia8/aakhmets-mc_2018UL_qcd_QCD_Pt_3200toInf_1729599421-00000000000000000000000000000000/USER
+/QCD_Pt_470to600_TuneCP5_13TeV_pythia8/aakhmets-mc_2018UL_qcd_QCD_Pt_470to600_1729599421-00000000000000000000000000000000/USER
+/QCD_Pt_600to800_TuneCP5_13TeV_pythia8/aakhmets-mc_2018UL_qcd_QCD_Pt_600to800_1729599421-00000000000000000000000000000000/USER
+/QCD_Pt_800to1000_TuneCP5_13TeV_pythia8/aakhmets-mc_2018UL_qcd_QCD_Pt_800to1000_1729599421-00000000000000000000000000000000/USER
+/ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8/aakhmets-mc_2018UL_singletop_ST_t-channel_antitop_4f_InclusiveDecays_1729599421-00000000000000000000000000000000/USER
+/ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8/aakhmets-mc_2018UL_singletop_ST_t-channel_top_4f_InclusiveDecays_1729599421-00000000000000000000000000000000/USER
+/ST_tW_antitop_5f_inclusiveDecays_TuneCP5_13TeV-powheg-pythia8/aakhmets-mc_2018UL_singletop_ST_tW_antitop_5f_inclusiveDecays_1729599421-00000000000000000000000000000000/USER
+/ST_tW_top_5f_inclusiveDecays_TuneCP5_13TeV-powheg-pythia8/aakhmets-mc_2018UL_singletop_ST_tW_top_5f_inclusiveDecays_1729599421-00000000000000000000000000000000/USER
+/TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8/aakhmets-mc_2018UL_ttbar_TTTo2L2Nu_1729599001-00000000000000000000000000000000/USER
+/TTToHadronic_TuneCP5_13TeV-powheg-pythia8/aakhmets-mc_2018UL_ttbar_TTToHadronic_1729599001-00000000000000000000000000000000/USER
+/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/aakhmets-mc_2018UL_ttbar_TTToSemiLeptonic_1729530171-00000000000000000000000000000000/USER
+/WJetsToLNu_TuneCP5_13TeV-madgraphMLM-pythia8/aakhmets-mc_2018UL_wjets_WJetsToLNu_1729599421-00000000000000000000000000000000/USER
 ```
