@@ -22,6 +22,7 @@ Ability to source `crab3` software and create a VOMS proxy certificate via:
 
 ```bash
 source /cvmfs/cms.cern.ch/common/crab-setup.sh
+export CRAB3_CACHE_FILE=/dev/null
 voms-proxy-init --valid 192:00:00 --voms cms:/dcms --rfc
 ```
 

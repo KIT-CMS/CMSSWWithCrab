@@ -72,7 +72,7 @@ def load_config(config_path):
 async def submit(config, logger, nworkers):
     loop = asyncio.get_event_loop()
     try:
-        sleep_duration = random.randint(0, 12 * nworkers)
+        sleep_duration = random.randint(0, 2* nworkers)
         await asyncio.sleep(sleep_duration)
         res = await loop.run_in_executor(
             None, lambda: crabCommand("submit", config=config)
