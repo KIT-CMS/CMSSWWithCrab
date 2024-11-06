@@ -92,7 +92,7 @@ async def submit(config, logger, nworkers):
 async def status(cfg_dir, logger, nworkers):
     loop = asyncio.get_event_loop()
     try:
-        sleep_duration = random.randint(0, 12 * nworkers)
+        sleep_duration = random.randint(0, 2* nworkers)
         await asyncio.sleep(sleep_duration)
         res = await loop.run_in_executor(
             None, lambda: crabCommand("status", dir=cfg_dir)
@@ -106,7 +106,7 @@ async def status(cfg_dir, logger, nworkers):
 async def resubmit(cfg_dir, logger, nworkers, **kwargs):
     loop = asyncio.get_event_loop()
     try:
-        sleep_duration = random.randint(0, 12 * nworkers)
+        sleep_duration = random.randint(0, 2* nworkers)
         await asyncio.sleep(sleep_duration)
         res = await loop.run_in_executor(
             None, lambda: crabCommand("resubmit", dir=cfg_dir, **kwargs)
