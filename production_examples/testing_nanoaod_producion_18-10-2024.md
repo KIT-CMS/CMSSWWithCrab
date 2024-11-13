@@ -2,7 +2,7 @@
 
 ## Used configuration and setup:
 
-* conditions: [`configuration/conditions.yaml`](../(configuration/conditions.yaml)
+* conditions: [`configuration/conditions.yaml`](../configuration/conditions.yaml)
 * cmsdriver settings for nanoAOD: [`configuration/cmsdriver_nanoaod_specifics.yaml`](../configuration/cmsdriver_nanoaod_specifics.yaml)
 * datasets: [`configuration/datasets_miniaod_boostedhtt_2018UL.yaml`](../configuration/datasets_miniaod_boostedhtt_2018UL.yaml)
 * crab config template: [`crab_configuration/crab_template.py`](../crab_configuration/crab_template.py)
@@ -36,7 +36,7 @@ Something like 15 GB memory was used with 8 threads and 8 streams.
 Decided to go for an `EventAwareLumiBased` splitting with 10k events to be processed.
 This reduces the runtime to something like an hour and memory to about 5 GB.
 To be safe, choosing 2 hours as maximum runtime and 10 GB as maximum memory.
-This will lead to a lot of and extremely small output files.
+This will lead to a lot of extremely small output files.
 To be checked, whether this impacts the performance later on when these datasets are used for analysis.
 
 Final call:
@@ -52,7 +52,7 @@ Final call:
 
 ## Managing of crab tasks call
 
-Initial calls will be presented in the following, which can be adapted further for resubmission by adding at least one of the two options `--maxmemory` and `--maxjobruntime`-
+Initial calls will be presented in the following, which can be adapted further for resubmission by adding at least one of the two options `--maxmemory` and `--maxjobruntime`.
 
 ### data:
 
@@ -91,7 +91,7 @@ Final call:
   --maxMemoryMBperCore 500 --publication --splitting EventAwareLumiBased --unitsPerJob 1000000 --maxJobRuntimeMin 900
 ```
 
-### Adaptions during production campaign
+### Adaptations during production campaign
 
 Due to some of the tasks being not processed well, changed the setup for a few larger datasets to:
 
