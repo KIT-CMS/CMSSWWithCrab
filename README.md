@@ -43,7 +43,7 @@ to create [`crab3`](https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideCrab) 
 * CMSSW specific settings to be passed to cmsDriver commands. Example: [`configuration/cmsdriver_nanoaod_specifics.yaml`](configuration/cmsdriver_nanoaod_specifics.yaml)
 * Datasets to process. Example: [`configuration/datasets_miniaod_boostedhtt_2018UL.yaml`](configuration/datasets_miniaod_boostedhtt_2018UL.yaml)
 
-In addition, general `crab3` configuration is provided via [`crab_configuration/crab_template.py`](crab_configuration/crab_template.py)
+In addition, general `crab3` configuration is provided via [`crab_configuration/crab_template.py`](crab_configuration/crab_template.py).
 
 Please get familiar with these files and their structure to be able to construct corresponding files for your use-case.
 
@@ -58,7 +58,7 @@ Furthermore, it might be that depending on these settings, the memory consumptio
 Feel free to set these numbers differently, e.g. `--nThreads 4`, but `--nStreams 2`, or even `--nStreams 1`.
 
 You are strongly advised to test the `cmsRun` config locally on a representative input file, check both the runtime and memory consumption, and project
-the outcome to proper requirements for `crab3` config.
+the outcome onto proper requirements for `crab3` config.
 
 It might well be that there are differences in performance and resource consumption between processing recorded data samples, or simulated samples.
 In consequence, please test these two main use-cases separately from each other.
@@ -77,7 +77,7 @@ For [`create_configs.py`](create_configs.py), the following were found to be imp
 * `--splitting` and `--unitsPerJob` define, how your input data is distributed among the jobs. Usually, `Automatic` splitting is a good choice, and `--unitsPerJob` represents in that case the desired job runtime - try to target something below 24 hours, e.g. 1250 minutes. Please get familiar with this setting. However, since testing a `cmsRun` config locall works easiest with a specific number of files or events, you might want to consider `FileBased` or `EventAwareLumiBased` splitting to have more control over the runtime and memory consumption of your jobs. This might prevent too frequent resubmissions of jobs.
 * `maxJobRuntimeMin` defines the maximum expected runtime of your jobs and is passed to crab configuration. Jobs with larger runtimes will be potentially aborted and fail, so try to estimate this number properly.
 * `--publication` is a flag, which allows you to publish your output data in CMS DBS under `phys03` instance. This makes it much simpler to collect lists of output files. Feel free to use that for your actual production campaigns. In case you choose to publish your dataset, it obtains a custom `outputDatasetTag` used in the dataset name, constructed from `requestName` and the timestamp integer at the time you are running `./create_configs.py`. This ensures, that datasets have (more or less) unique names. In that context, please avoid submitting a `crab3` task, then deleting the task directory after some time, and then resubmitting the same task with the same configuation again. That might lead to duplication of content of published datasets. At each task submission attempt, please ensure, that you use a new configuration (e.g. by re-running `./create_configs.py`).
-* `--siteWhitelist` and `--siteBlacklist` can be used to have (come) control over which sites are used to run there your jobs. Under ideal circumstances, it would be good to use all available sites where the input files are placed, since restricting to only a few sites via whitelist might lead to a bad task throughput, such that you would need to wait quite long for a production campaign to finish. On the other hand, there might be bad sites with problems, or even with corrupt files which look OK on the outside (yes, that might happen, too...). For such cases, a blacklist of sites can help.
+* `--siteWhitelist` and `--siteBlacklist` can be used to have (come) control over which sites are used to run there your jobs. Under ideal circumstances, it would be good to use all available sites where the input files are placed, since restricting to only a few sites via whitelist might lead to a bad task throughput, such that you would need to wait quite long for a production campaign to finish. On the other hand, there might be bad sites with problems, or even with corrupt files which look OK on the outside (yes, that might happen, too...). In such cases, a blacklist of sites can help.
 
 Furthermore, you have to consider a few server-sided restrictions/constraints for jobs running on the grid:
 
@@ -86,8 +86,8 @@ Furthermore, you have to consider a few server-sided restrictions/constraints fo
 * Per `crab3` task, you are only allowed to have a maximum of 10k jobs. So try to keep the work per job at a large enough amount, e.g. the number of events to process should be kept high enough.
 
 These restrictions have to be taken into account especially when you encounter memory leaks.
-These usually lead to memory overuse, and consequently, to failing jobs, or a trend towards small amount of work per job.
-The latter consequence is detrimental for processing of large datasets.
+These usually lead to memory overuse, and consequently, to failing jobs, or a trend towards a too small amount of work per job.
+The latter consequence is detrimental to the processing of large datasets.
 A way out of that might be older CMSSW releases, which have proven to be fine for official large-scale productions.
 
 ### Example call:
@@ -107,7 +107,7 @@ For that purpose, the script [`crab_manager.py`](crab_manager.py) was designed. 
 1) After getting a `crab3` config from the submission queue, and in case the task directory assigned to this `crab3` config does not exist, the submission of this task is executed. After that, the task directory is available and properly set. To make sure that there are no problems related to parallel processing, the submission is done sequentially for the configs from the submission queue. After the submission was performed, the configuration is passed further to the status queue to process it with the remaining workflow, using multiple workers.
 2) For a properly created task directory, the status is queried regularly, checking the number of all, intermediate, (idle and running), finished, failed, and published jobs.
 3) In case failed jobs are encountered, and there aren't any intermediate jobs left, a resubmission attempt could be initiated, if at least one of the options `--maxmemory` and `--maxjobruntime` were specified, when starting `./crab_manager.py`. Please be careful when resubmitting to avoid too many attempts by paying attention to specifying good values for these two options. Furthermore, `--siteblacklist` and `--sitewhitelist` can be used to have better control over which sites do resubmit the jobs to.
-4) If everything was processed successfully, it is expected that numbers of all, finished, and published jobs are equal. In that case, the name of the published dataset is printed, and the `crab3` task is considered as done, in case the check of the sample statistics is successful. This test involves a comparison of number of events between the input and the output datasets with `dasgoclient`, and a check of the actual number of events in the output files with `ROOT`. Please note that the last check can get wrong numbers, if the connection to the files is interrupted for some reason.
+4) If everything was processed successfully, it is expected that numbers of all, finished, and published jobs are equal. In that case, the name of the published dataset is printed, and the `crab3` task is considered as done, in case the check of the sample statistics is successful. This test involves a comparison of the number of events between the input and the output datasets with `dasgoclient`, and a check of the actual number of events in the output files with `ROOT`. Please note that the last check can get wrong numbers, if the connection to the files is interrupted for some reason.
 5) If the queue is not empty, the next `crab3` config is taken by the worker to be processed.
 
 
