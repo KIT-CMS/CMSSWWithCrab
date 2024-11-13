@@ -2,10 +2,10 @@
 
 ## Used configuration and setup:
 
-* conditions: [`configuration/conditions.yaml`](configuration/conditions.yaml)
-* cmsdriver settings for nanoAOD: [`configuration/cmsdriver_nanoaod_specifics.yaml`](configuration/cmsdriver_nanoaod_specifics.yaml)
-* datasets: [`configuration/datasets_miniaod_boostedhtt.yaml`](configuration/datasets_miniaod_boostedhtt.yaml)
-* crab config template: [`crab_configuration/crab_template.py`](crab_configuration/crab_template.py)
+* conditions: [`configuration/conditions.yaml`](../(configuration/conditions.yaml)
+* cmsdriver settings for nanoAOD: [`configuration/cmsdriver_nanoaod_specifics.yaml`](../configuration/cmsdriver_nanoaod_specifics.yaml)
+* datasets: [`configuration/datasets_miniaod_boostedhtt_2018UL.yaml`](../configuration/datasets_miniaod_boostedhtt_2018UL.yaml)
+* crab config template: [`crab_configuration/crab_template.py`](../crab_configuration/crab_template.py)
 * CMSSW release: ~~CMSSW_14_2_0_pre2~~ (**memory leak!!!**) CMSSW_13_0_21
 
 <details><summary>Deprecated due to CMSSW_14_2_0_pre2 issues</summary>
@@ -22,7 +22,7 @@ Final call:
 
 ```bash
 ./create_configs.py --work-directory /ceph/$(whoami)/test_crab_nanoaod_submission_18-10-2024_data/ \
-  --datasets configuration/datasets_miniaod_boostedhtt.yaml \
+  --datasets configuration/datasets_miniaod_boostedhtt_2018UL.yaml \
   --conditions configuration/conditions.yaml \
   --cmsdriver configuration/cmsdriver_nanoaod_specifics.yaml \
   --nThreads 8 --numCores 8 \
@@ -43,7 +43,7 @@ Final call:
 
 ```bash
 ./create_configs.py --work-directory /ceph/$(whoami)/test_crab_nanoaod_submission_18-10-2024_mc/ \
-  --datasets configuration/datasets_miniaod_boostedhtt.yaml \
+  --datasets configuration/datasets_miniaod_boostedhtt_2018UL.yaml \
   --conditions configuration/conditions.yaml \
   --cmsdriver configuration/cmsdriver_nanoaod_specifics.yaml \
   --nThreads 8 --numCores 8 \
@@ -84,7 +84,7 @@ Final call:
 
 ```bash
 ./create_configs.py --work-directory /ceph/$(whoami)/test_crab_nanoaod_submission_21-10-2024_prodreleasev12/ \
-  --datasets configuration/datasets_miniaod_boostedhtt.yaml \
+  --datasets configuration/datasets_miniaod_boostedhtt_2018UL.yaml \
   --conditions configuration/conditions.yaml \
   --cmsdriver configuration/cmsdriver_nanoaod_specifics.yaml \
   --nThreads 8 --numCores 8 \
@@ -97,7 +97,7 @@ Due to some of the tasks being not processed well, changed the setup for a few l
 
 ```bash
 ./create_configs.py --work-directory /ceph/$(whoami)/test_crab_nanoaod_submission_21-10-2024_prodreleasev12_filebased/ \
-  --datasets configuration/datasets_miniaod_boostedhtt.yaml \
+  --datasets configuration/datasets_miniaod_boostedhtt_2018UL.yaml \
   --conditions configuration/conditions.yaml \
   --cmsdriver configuration/cmsdriver_nanoaod_specifics.yaml \
   --nThreads 8 --numCores 8 \

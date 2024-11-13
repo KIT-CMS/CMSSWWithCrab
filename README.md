@@ -23,7 +23,7 @@ Ability to source `crab3` software and create a VOMS proxy certificate via:
 ```bash
 source /cvmfs/cms.cern.ch/common/crab-setup.sh
 export CRAB3_CACHE_FILE=/dev/null
-voms-proxy-init --valid 192:00:00 --voms cms:/dcms --rfc
+voms-proxy-init --valid 192:00:00 --voms cms:/cms/dcms --rfc
 ```
 
 Checkout of this setup:
@@ -41,7 +41,7 @@ to create [`crab3`](https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideCrab) 
 
 * Conditions for processing CMS data. Example: [`configuration/conditions.yaml`](configuration/conditions.yaml)
 * CMSSW specific settings to be passed to cmsDriver commands. Example: [`configuration/cmsdriver_nanoaod_specifics.yaml`](configuration/cmsdriver_nanoaod_specifics.yaml)
-* Datasets to process. Example: [`configuration/datasets_miniaod_boostedhtt.yaml`](configuration/datasets_miniaod_boostedhtt.yaml)
+* Datasets to process. Example: [`configuration/datasets_miniaod_boostedhtt_2018UL.yaml`](configuration/datasets_miniaod_boostedhtt_2018UL.yaml)
 
 In addition, general `crab3` configuration, which is provided via [`crab_configuration/crab_template.py`](crab_configuration/crab_template.py)
 
@@ -94,7 +94,7 @@ A way out of that might be older CMSSW releases, which have proven to be fine fo
 
 ```bash
 ./create_configs.py --work-directory ~/crab_work_dir \
-  --datasets configuration/datasets_miniaod_boostedhtt.yaml \
+  --datasets configuration/datasets_miniaod_boostedhtt_2018UL.yaml \
   --conditions configuration/conditions.yaml \
   --cmsdriver configuration/cmsdriver_nanoaod_specifics.yaml \
   --numCores 4 --nThreads 4 --nStreams 2 --maxMemoryMBperCore 1250 --publication
@@ -107,8 +107,11 @@ For that purpose, the script [`crab_manager.py`](crab_manager.py) was designed. 
 1) After getting a `crab3` config from the submissionqueue, and in case the task directory assigned to this `crab3` config does not exist, the submission of this task is executed. After that, the task directory is available and properly set. To make sure, that there are no problems related to parallel processing, the submission is done sequentially for the configs from the submission queue. After the submission was performed, the configuration is passed further to the status queue to process it with the remaining workflow, using multiple workers.
 2) For a properly created task directory, the status is queried regularly, checking the number of all, intermediate, (idle and running), finished, failed, and published jobs.
 3) In case failed jobs are encountered, and there aren't any intermediate jobs left, a resubmission attempt could be initiated, if at least one of the options `--maxmemory` and `--maxjobruntime` were specified, when starting `./crab_manager.py`. Please be careful when resubmitting to avoid too many attempts by paying attention to specify good values for these two options. Furthermore, `--siteblacklist` and `--sitewhitelist` can be used to have a better control on sites do resubmit the jobs to.
-4) If everything was processed successfully, it is expected, that numbers of all, finished, and published jobs are equal. In that, case the name of the published dataset is printed, and the `crab3` task is considered as done.
+4) If everything was processed successfully, it is expected, that numbers of all, finished, and published jobs are equal. In that, case the name of the published dataset is printed, and the `crab3` task is considered as done, in case the check of the sample statistics is successful. This test involves a comparison of number of events between the input and the output datasets with `dasgoclient`, and a check of the actuall number of events in the output files with `ROOT`. Please note, that the last check can get wrong numbers, if the connection to the files is interrupted for some reason.
 5) If the queue is not empty, the next `crab3` config is taken by the worker to be processed.
+
+
+Information on the progress, including statistics of finished tasks, are included in the logs `logs/worker_*.txt`.
 
 ### Example call:
 
