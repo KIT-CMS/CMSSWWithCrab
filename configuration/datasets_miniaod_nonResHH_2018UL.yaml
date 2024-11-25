@@ -1,0 +1,22 @@
+# General structure:
+# {data,mc}:
+#   <era>:
+#     <sampletype>:
+#       <key>: <datasetname>
+mc:
+  2018UL:
+    # GluGluToHHTo2B2Tau_TuneCP5_PSWeights_node_<x>_13TeV-madgraph-pythia8
+    gg:
+      Node_SM: gg/GluGluToHHTo2B2Tau_TuneCP5_PSWeights_node_SM_13TeV-madgraph-pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v2/MINIAODSIM
+      Node_01: gg/GluGluToHHTo2B2Tau_TuneCP5_PSWeights_node_01_13TeV-madgraph-pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v2/MINIAODSIM
+      Node_02: gg/GluGluToHHTo2B2Tau_TuneCP5_PSWeights_node_02_13TeV-madgraph-pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v2/MINIAODSIM
+      Node_03: gg/GluGluToHHTo2B2Tau_TuneCP5_PSWeights_node_03_13TeV-madgraph-pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v2/MINIAODSIM
+      Node_04: gg/GluGluToHHTo2B2Tau_TuneCP5_PSWeights_node_04_13TeV-madgraph-pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v2/MINIAODSIM
+      Node_05: gg/GluGluToHHTo2B2Tau_TuneCP5_PSWeights_node_05_13TeV-madgraph-pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v2/MINIAODSIM
+      Node_06: gg/GluGluToHHTo2B2Tau_TuneCP5_PSWeights_node_06_13TeV-madgraph-pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v2/MINIAODSIM
+      Node_07: gg/GluGluToHHTo2B2Tau_TuneCP5_PSWeights_node_07_13TeV-madgraph-pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v2/MINIAODSIM
+      Node_08: gg/GluGluToHHTo2B2Tau_TuneCP5_PSWeights_node_08_13TeV-madgraph-pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v2/MINIAODSIM
+      Node_09: gg/GluGluToHHTo2B2Tau_TuneCP5_PSWeights_node_09_13TeV-madgraph-pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v2/MINIAODSIM
+      Node_10: gg/GluGluToHHTo2B2Tau_TuneCP5_PSWeights_node_10_13TeV-madgraph-pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v2/MINIAODSIM
+      Node_11: gg/GluGluToHHTo2B2Tau_TuneCP5_PSWeights_node_11_13TeV-madgraph-pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v2/MINIAODSIM
+      Node_12: gg/GluGluToHHTo2B2Tau_TuneCP5_PSWeights_node_12_13TeV-madgraph-pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v2/MINIAODSIM
