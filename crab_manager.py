@@ -183,7 +183,7 @@ async def worker(
             n_published = -1
             n_finished = -2
             n_all = -3
-            while n_all != n_finished or n_all != n_published:
+            while n_all != n_finished or n_all != n_published or n_all <= 0:
                 logger.info(f"Checking task status for {cfg_directory}")
                 res = await status(cfg_directory, logger, nworkers)
                 if res:
@@ -220,7 +220,7 @@ async def worker(
                             cfg_directory, logger, nworkers, **kwargs
                         )
                 await asyncio.sleep(
-                    0 if n_all == n_finished and n_all == n_published else 900
+                    0 if n_all == n_finished and n_all == n_published and n_all > 0 else 900
                 )
             logger.info(f"Task {cfg_directory} finished. Checking output datasets.")
             for dataset in ast.literal_eval(res["outdatasets"]):
