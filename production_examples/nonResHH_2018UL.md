@@ -43,7 +43,7 @@ Resubmitted Tasks manually.
 
 The finished production campaign can be seen at CMS Grafana:
 
-https://monit-grafana.cern.ch/goto/mK-6YmSHg?orgId=11
+https://monit-grafana.cern.ch/goto/h1HmEmIHR?orgId=11
 
 The resulting datasets are (accessible via DAS webpage or `dasgoclient`, using `prod/phys03` DBS instance):
 
