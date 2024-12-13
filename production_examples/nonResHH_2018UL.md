@@ -43,32 +43,7 @@ Resubmitted Tasks manually.
 
 The finished production campaign can be seen at CMS Grafana:
 
-https://monit-grafana.cern.ch/d/cmsTMDetail/cms-task-monitoring-task-view?orgId=11&var-user=sdaigler&var-task=241204_123808%3Asdaigler_crab_mc_2018UL_gghh2b2tau_GluGluToHHTo2B2Tau_Node_SM&from=1733315888000&to=1734086413348
-
-https://monit-grafana.cern.ch/d/cmsTMDetail/cms-task-monitoring-task-view?orgId=11&var-user=sdaigler&var-task=241204_123705%3Asdaigler_crab_mc_2018UL_gghh2b2tau_GluGluToHHTo2B2Tau_Node_1&from=1733315825000&to=1734086427884
-
-https://monit-grafana.cern.ch/d/cmsTMDetail/cms-task-monitoring-task-view?orgId=11&var-user=sdaigler&var-task=241204_123727%3Asdaigler_crab_mc_2018UL_gghh2b2tau_GluGluToHHTo2B2Tau_Node_2&from=1733315847000&to=1734086452621
-
-https://monit-grafana.cern.ch/d/cmsTMDetail/cms-task-monitoring-task-view?orgId=11&var-user=sdaigler&var-task=241204_123732%3Asdaigler_crab_mc_2018UL_gghh2b2tau_GluGluToHHTo2B2Tau_Node_3&from=1733315852000&to=1734086460275
-
-https://monit-grafana.cern.ch/d/cmsTMDetail/cms-task-monitoring-task-view?orgId=11&var-user=sdaigler&var-task=241129_111400%3Asdaigler_crab_mc_2018UL_gghh2b2tau_GluGluToHHTo2B2Tau_Node_4&from=1732878840000&to=1734086467779
-
-https://monit-grafana.cern.ch/d/cmsTMDetail/cms-task-monitoring-task-view?orgId=11&var-user=sdaigler&var-task=241204_123739%3Asdaigler_crab_mc_2018UL_gghh2b2tau_GluGluToHHTo2B2Tau_Node_5&from=1733315859000&to=1734086475346
-
-https://monit-grafana.cern.ch/d/cmsTMDetail/cms-task-monitoring-task-view?orgId=11&var-user=sdaigler&var-task=241204_123743%3Asdaigler_crab_mc_2018UL_gghh2b2tau_GluGluToHHTo2B2Tau_Node_6&from=1733315863000&to=1734086487875
-
-https://monit-grafana.cern.ch/d/cmsTMDetail/cms-task-monitoring-task-view?orgId=11&var-user=sdaigler&var-task=241204_123753%3Asdaigler_crab_mc_2018UL_gghh2b2tau_GluGluToHHTo2B2Tau_Node_7&from=1733315873000&to=1734086497388
-
-https://monit-grafana.cern.ch/d/cmsTMDetail/cms-task-monitoring-task-view?orgId=11&var-user=sdaigler&var-task=241204_123758%3Asdaigler_crab_mc_2018UL_gghh2b2tau_GluGluToHHTo2B2Tau_Node_8&from=1733315878000&to=1734086506867
-
-https://monit-grafana.cern.ch/d/cmsTMDetail/cms-task-monitoring-task-view?orgId=11&var-user=sdaigler&var-task=241204_123804%3Asdaigler_crab_mc_2018UL_gghh2b2tau_GluGluToHHTo2B2Tau_Node_9&from=1733315884000&to=1734086515411
-
-https://monit-grafana.cern.ch/d/cmsTMDetail/cms-task-monitoring-task-view?orgId=11&var-user=sdaigler&var-task=241204_123711%3Asdaigler_crab_mc_2018UL_gghh2b2tau_GluGluToHHTo2B2Tau_Node_10&from=1733315831000&to=1734086522714
-
-https://monit-grafana.cern.ch/d/cmsTMDetail/cms-task-monitoring-task-view?orgId=11&var-user=sdaigler&var-task=241204_123716%3Asdaigler_crab_mc_2018UL_gghh2b2tau_GluGluToHHTo2B2Tau_Node_11&from=1733315836000&to=1734086530224
-
-https://monit-grafana.cern.ch/d/cmsTMDetail/cms-task-monitoring-task-view?orgId=11&var-user=sdaigler&var-task=241204_123722%3Asdaigler_crab_mc_2018UL_gghh2b2tau_GluGluToHHTo2B2Tau_Node_12&from=1733315842000&to=1734086537892
-
+https://monit-grafana.cern.ch/goto/mK-6YmSHg?orgId=11
 
 The resulting datasets are (accessible via DAS webpage or `dasgoclient`, using `prod/phys03` DBS instance):
 
