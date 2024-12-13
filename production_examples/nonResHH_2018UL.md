@@ -4,7 +4,7 @@
 
 * conditions: [`configuration/conditions.yaml`](../configuration/conditions.yaml)
 * cmsdriver settings for nanoAOD: [`configuration/cmsdriver_nanoaod_specifics.yaml`](../configuration/cmsdriver_nanoaod_specifics.yaml)
-* datasets: [`../configuration/datasets_miniaod_nonResHH_2018UL.yaml`](../configuration/datasets_miniaod_nonResHH_2018UL.yaml)
+* datasets: [`configuration/datasets_miniaod_nonResHH_2018UL.yaml`](../configuration/datasets_miniaod_nonResHH_2018UL.yaml)
 * crab config template: [`crab_configuration/crab_template.py`](../crab_configuration/crab_template.py)
 * CMSSW release: CMSSW_13_0_21
 
