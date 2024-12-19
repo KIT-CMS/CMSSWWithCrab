@@ -4,7 +4,7 @@
 #     <sampletype>:
 #       <key>: <datasetname>
 data:
-  2016postVFP:
+  2016ULpostVFP:
     singlemuon:
       SingleMuon_Run2016F: /SingleMuon/Run2016F-UL2016_MiniAODv2-v2/MINIAOD
       SingleMuon_Run2016G: /SingleMuon/Run2016G-UL2016_MiniAODv2-v2/MINIAOD
