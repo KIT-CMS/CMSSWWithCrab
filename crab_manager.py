@@ -44,7 +44,7 @@ def parse_args():
     )
     parser.add_argument(
         "--nworkers",
-        default=5,
+        default=0,
         type=int,
         help="Number of workers to manage the crab tasks simultaneously",
     )
@@ -176,7 +176,7 @@ async def worker(
                 )
                 res = True
             # Enqueue the task for status checking, if successfully submitted
-            if res:
+            if res and nworkers:
                 await status_queue.put(cfgpath)
 
         else:
@@ -327,12 +327,13 @@ async def main():
     await submission_worker
 
     # Wait until the status queue is fully processed
-    await status_queue.join()
+    if nworkers:
+        await status_queue.join()
 
-    # Stop workers
-    for _ in range(nworkers):
-        await status_queue.put(None)
-    await asyncio.gather(*status_workers)
+        # Stop workers
+        for _ in range(nworkers):
+            await status_queue.put(None)
+        await asyncio.gather(*status_workers)
 
 
 if __name__ == "__main__":
