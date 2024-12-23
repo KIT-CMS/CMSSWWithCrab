@@ -10,7 +10,7 @@
 
 ## Further preparation:
 
-Moved the required dataset to T1_DE_KIT_Disk storage to make sure, that they can be processed at German sites.
+Moved the required datasets to T1_DE_KIT_Disk storage to make sure, that they can be processed at German sites.
 
 ## Creation of CMSSW and Crab configs call
 
