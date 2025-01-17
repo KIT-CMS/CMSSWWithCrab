@@ -154,4 +154,5 @@ The resulting datasets are (accessible via DAS webpage or `dasgoclient`, using `
 /TTToHadronic_TuneCP5_13TeV-powheg-pythia8/aakhmets-mc_2018UL_ttbar_TTToHadronic_1729599001-00000000000000000000000000000000/USER
 /TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/aakhmets-mc_2018UL_ttbar_TTToSemiLeptonic_1729530171-00000000000000000000000000000000/USER
 /WJetsToLNu_TuneCP5_13TeV-madgraphMLM-pythia8/aakhmets-mc_2018UL_wjets_WJetsToLNu_1729599421-00000000000000000000000000000000/USER
+/GluGluHToTauTau_Pt-200ToInf_M-125_TuneCP5_MINLO_13TeV-powheg-pythia8/olavoryk-mc_2018UL_ggh_GluGluHToTauTau_Pt-200ToInf_1736936542-00000000000000000000000000000000/USER
 ```
