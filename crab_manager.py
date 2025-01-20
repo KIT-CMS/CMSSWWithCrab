@@ -188,6 +188,7 @@ async def worker(
             n_published = -1
             n_finished = -2
             n_all = -3
+            final_crosscheck_done = False
             while n_all != n_finished or n_all != n_published or n_all <= 0:
                 logger.info(f"Checking task status for {cfg_directory}")
                 res = await status(cfg_directory, logger, nworkers)
@@ -229,56 +230,58 @@ async def worker(
                     0 if n_all == n_finished and n_all == n_published and n_all > 0 else 900
                 )
             logger.info(f"Task {cfg_directory} finished. Checking output datasets.")
-            for dataset in ast.literal_eval(res["outdatasets"]):
-                try:
-                    das_output = await run_dasgoclient_query(
-                        "datset", dataset, "prod/phys03", True
-                    )
-                    das_output_files = await run_dasgoclient_query(
-                        "file", dataset, "prod/phys03", False
-                    )
-                    das_input = await run_dasgoclient_query(
-                        "dataset", cfg.Data.inputDataset, "prod/global", True
-                    )
-                    nevents_output = None
-                    nevents_input = None
-                    nevents_output_from_files = None
-                    c = r.TChain("Events")
-                    for f in das_output_files.split("\n"):
-                        c.Add("root://cms-xrd-global.cern.ch/" + f.strip())
-                    nevents_output_from_files = c.GetEntries()
-                    for o in das_output:
-                        for do in o["dataset"]:
-                            if "nevents" in do:
-                                nevents_output = do["nevents"]
-                                break
-                    for i in das_input:
-                        for di in i["dataset"]:
-                            if "nevents" in di:
-                                nevents_input = di["nevents"]
-                                break
-                    if (
-                        nevents_input is None
-                        or nevents_output is None
-                        or nevents_input != nevents_output
-                        or nevents_output_from_files != nevents_output
-                        or nevents_output_from_files != nevents_input
-                    ):
+            while not final_crosscheck_done:
+                for dataset in ast.literal_eval(res["outdatasets"]):
+                    try:
+                        das_output = await run_dasgoclient_query(
+                            "datset", dataset, "prod/phys03", True
+                        )
+                        das_output_files = await run_dasgoclient_query(
+                            "file", dataset, "prod/phys03", False
+                        )
+                        das_input = await run_dasgoclient_query(
+                            "dataset", cfg.Data.inputDataset, "prod/global", True
+                        )
+                        nevents_output = None
+                        nevents_input = None
+                        nevents_output_from_files = None
+                        c = r.TChain("Events")
+                        for f in das_output_files.split("\n"):
+                            c.Add("root://cms-xrd-global.cern.ch/" + f.strip())
+                        nevents_output_from_files = c.GetEntries()
+                        for o in das_output:
+                            for do in o["dataset"]:
+                                if "nevents" in do:
+                                    nevents_output = do["nevents"]
+                                    break
+                        for i in das_input:
+                            for di in i["dataset"]:
+                                if "nevents" in di:
+                                    nevents_input = di["nevents"]
+                                    break
+                        if (
+                            nevents_input is None
+                            or nevents_output is None
+                            or nevents_input != nevents_output
+                            or nevents_output_from_files != nevents_output
+                            or nevents_output_from_files != nevents_input
+                        ):
+                            logger.error(
+                                f"Numbers of events in input {cfg.Data.inputDataset} ({nevents_input}), output {dataset} ({nevents_output}), and output based on files ({nevents_output_from_files}) differ."
+                            )
+                            logger.error(
+                                f"Crab task {cfg_directory} seems to be FAILED. Please investigate and if needed, recreate and resubmit the entire task"
+                            )
+                        else:
+                            logger.info(
+                                f"\t{dataset}: {nevents_output} events, consistent with input dataset"
+                            )
+                        final_crosscheck_done = True
+                    except Exception as e:
                         logger.error(
-                            f"Numbers of events in input {cfg.Data.inputDataset} ({nevents_input}), output {dataset} ({nevents_output}), and output based on files ({nevents_output_from_files}) differ."
+                            f"Failed to query DAS for dataset {dataset} and its parent:\n{e}"
                         )
-                        logger.error(
-                            f"Crab task {cfg_directory} seems to be FAILED. Please investigate and if needed, recreate and resubmit the entire task"
-                        )
-                    else:
-                        logger.info(
-                            f"\t{dataset}: {nevents_output} events, consistent with input dataset"
-                        )
-                except Exception as e:
-                    logger.error(
-                        f"Failed to query DAS for dataset {dataset} and its parent:\n{e}"
-                    )
-
+                        final_crosscheck_done = False
         queue.task_done()
 
 
