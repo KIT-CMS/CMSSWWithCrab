@@ -200,7 +200,7 @@ async def worker(
                     )
                     n_intermediate = res["jobsPerStatus"].get("idle", 0) + res[
                         "jobsPerStatus"
-                    ].get("running", 0)
+                    ].get("running", 0) + res["jobsPerStatus"].get("toRetry", 0)
                     n_finished = res["jobsPerStatus"].get("finished", 0)
                     n_failed = res["jobsPerStatus"].get("failed", 0)
                     n_published = res["publication"].get("done", 0)
