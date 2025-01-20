@@ -58,6 +58,11 @@ def parse_args():
         default=None,
         help="Comma-separated list of sites to avoid running your jobs there.",
     )
+    parser.add_argument(
+        "--resubmit-failed-immediately",
+        action="store_true",
+        help="Modify resubmission mode to resubmit failed jobs as soon as encountered.",
+    )
 
     return parser.parse_args()
 
@@ -212,7 +217,8 @@ async def worker(
                         }.items()
                         if v is not None
                     }
-                    if n_intermediate == 0 and n_failed > 0 and kwargs:
+                    resubmission_condition = n_failed > 0 if args.resubmit_failed_immediately else n_intermediate == 0 and n_failed > 0 and kwargs
+                    if resubmission_condition:
                         logger.info(
                             f"\tResubmitting task for {cfg_directory} with resubmission arguments: {kwargs}"
                         )
