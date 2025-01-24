@@ -121,6 +121,8 @@ The finished production campaign can be seen at CMS Grafana:
 
 https://monit-grafana.cern.ch/goto/h4P2U-ZNg?orgId=11
 
+https://monit-grafana.cern.ch/goto/bkPAiodNR?orgId=11
+
 The resulting datasets are (accessible via DAS webpage or `dasgoclient`, using `prod/phys03` DBS instance):
 
 ```bash
