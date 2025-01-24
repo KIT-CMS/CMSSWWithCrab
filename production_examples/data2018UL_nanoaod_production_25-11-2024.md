@@ -1,4 +1,4 @@
-# NanoAOD production campaign to test the tool
+# NanoAOD production campaign for 2018 data
 
 ## Used configuration and setup:
 

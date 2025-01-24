@@ -1,4 +1,4 @@
-# NanoAOD production for non resonant HH production - mc signals 
+# NanoAOD production for non resonant HH production - 2018 MC signals 
 
 ## Used configuration and setup:
 

@@ -1,4 +1,4 @@
-# NanoAOD production campaign to test the tool
+# NanoAOD production campaign for 2016 preVFP data
 
 ## Used configuration and setup:
 

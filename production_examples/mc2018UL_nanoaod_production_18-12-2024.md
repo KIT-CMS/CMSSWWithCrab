@@ -1,4 +1,4 @@
-# NanoAOD production campaign for 2018 MC production
+# NanoAOD production campaign for 2018 MC
 
 ## Used configuration and setup:
 

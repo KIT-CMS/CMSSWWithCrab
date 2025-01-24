@@ -1,4 +1,4 @@
-# NanoAOD production campaign to test the tool
+# NanoAOD production campaign to test the tool (use-case boosted htt 2018)
 
 ## Used configuration and setup:
 
