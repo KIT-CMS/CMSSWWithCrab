@@ -68,6 +68,12 @@ def parse_args():
         action="store_true",
         help="Enable rotation mode for status checking and resubmission.",
     )
+    parser.add_argument(
+        "--sleep-duration",
+        default=900,
+        type=int,
+        help="Sleep duration in seconds between status checks.",
+    )
 
     return parser.parse_args()
 
@@ -232,7 +238,7 @@ async def worker(
                             cfg_directory, logger, nworkers, **kwargs
                         )
                 await asyncio.sleep(
-                    0 if n_all == n_finished and n_all == n_published and n_all > 0 else 900
+                    0 if n_all == n_finished and n_all == n_published and n_all > 0 else args.sleep_duration
                 )
                 if args.rotation_mode and (n_all != n_finished or n_all != n_published):
                     await status_queue.put(cfgpath)
