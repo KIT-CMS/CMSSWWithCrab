@@ -240,7 +240,7 @@ async def worker(
                 await asyncio.sleep(
                     0 if n_all == n_finished and n_all == n_published and n_all > 0 else args.sleep_duration
                 )
-                if args.rotation_mode and (n_all != n_finished or n_all != n_published):
+                if args.rotation_mode and (n_all != n_finished or n_all != n_published or n_all == 0):
                     await status_queue.put(cfgpath)
                     break
             else:
