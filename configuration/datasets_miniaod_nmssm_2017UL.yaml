@@ -4,7 +4,7 @@
 #     <sampletype>:
 #       <key>: <datasetname>
 mc:
-  2018UL:
+  2017UL:
     nmssm_2b2tau:
       NMSSM_XToYHTo2B2Tau_MX-240_MY-60: /NMSSM_XToYHTo2B2Tau_MX-240_MY-60_TuneCP5_13TeV-madgraph-pythia8/RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/MINIAODSIM
       NMSSM_XToYHTo2B2Tau_MX-240_MY-70: /NMSSM_XToYHTo2B2Tau_MX-240_MY-70_TuneCP5_13TeV-madgraph-pythia8/RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/MINIAODSIM
