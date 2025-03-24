@@ -30,12 +30,14 @@ def parse_args():
         "--crab-config-patterns",
         nargs="*",
         required=False,
+        default=[],
         help="List of path patterns to the crab configuration files, processed with glob",
     )
     parser.add_argument(
-        "--crab-config-paths-file",
+        "--crab-config-path-files",
         nargs="*",
         required=False,
+        default=[],
         help="Path to text file containing paths to the crab configuration files to be submitted",
     )
     parser.add_argument(
@@ -313,7 +315,7 @@ async def main():
     args = parse_args()
 
     # We must either provide a pattern or a text file to tell the script which crab configs should be processed
-    if len(args.crab_config_patterns) == 0 and len(args.crab_config_paths_file) == 0:
+    if len(args.crab_config_patterns) == 0 and len(args.crab_config_path_files) == 0:
         raise ValueError("Use --crab-config-patterns and/or --crab-config-paths-file to set the crab configs that are processed with this script")
 
     # Store configs in list
@@ -323,10 +325,10 @@ async def main():
     for pattern in args.crab_config_patterns:
         config_paths.extend(glob.glob(pattern))
 
-    for config_paths_file in args.crab_config_paths_file:
-        if not os.path.isfile(config_paths_file):
-            raise OSError(f"{config_paths_file} does not exist or is not a file")
-        with open(config_paths_file, "r") as f:
+    for config_paths_file in args.crab_config_path_files:
+        if not os.path.isfile(config_path_file):
+            raise OSError(f"{config_path_file} does not exist or is not a file")
+        with open(config_path_file, "r") as f:
             content = f.readlines()
         config_paths.extend([
             config_path.strip()
