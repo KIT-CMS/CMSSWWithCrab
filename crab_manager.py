@@ -28,9 +28,15 @@ def parse_args():
     ## Necessary arguments
     parser.add_argument(
         "--crab-config-patterns",
-        nargs="+",
-        required=True,
+        nargs="*",
+        required=False,
         help="List of path patterns to the crab configuration files, processed with glob",
+    )
+    parser.add_argument(
+        "--crab-config-paths-file",
+        nargs="*",
+        required=False,
+        help="Path to text file containing paths to the crab configuration files to be submitted",
     )
     parser.add_argument(
         "--maxmemory",
@@ -306,10 +312,27 @@ async def worker(
 async def main():
     args = parse_args()
 
-    # Process the list of patterns and create a flat list of config paths
+    # We must either provide a pattern or a text file to tell the script which crab configs should be processed
+    if len(args.crab_config_patterns) == 0 and len(args.crab_config_paths_file) == 0:
+        raise ValueError("Use --crab-config-patterns and/or --crab-config-paths-file to set the crab configs that are processed with this script")
+
+    # Store configs in list
     config_paths = []
+
+    # Process the list of patterns and create a flat list of config paths
     for pattern in args.crab_config_patterns:
         config_paths.extend(glob.glob(pattern))
+
+    for config_paths_file in args.crab_config_paths_file:
+        if not os.path.isfile(config_paths_file):
+            raise OSError(f"{config_paths_file} does not exist or is not a file")
+        with open(config_paths_file, "r") as f:
+            content = f.readlines()
+        config_paths.extend([
+            config_path.strip()
+            for config_path in content
+            if len(config_path.strip()) > 0
+        ])
 
     submission_queue = asyncio.Queue()
     status_queue = asyncio.Queue()
