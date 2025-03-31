@@ -62,7 +62,7 @@ done
 
 The finished production campaign can be seen at CMS Grafana:
 
-https://monit-grafana.cern.ch/goto/cHtwtnhNR?orgId=11
+https://monit-grafana.cern.ch/goto/SwpoZQoHR?orgId=11
 
 The resulting datasets are (accessible via DAS webpage or `dasgoclient`, using `prod/phys03` DBS instance):
 
@@ -100,7 +100,7 @@ The resulting datasets are (accessible via DAS webpage or `dasgoclient`, using `
 /GluGluHToTauTau_HTXSFilter_STXS1p1_Bin107to109_M125_TuneCP5_13TeV-powheg-pythia8/aakhmets-mc_2016ULpreVFP_htautau_stxs_GluGluHToTauTau_Bin107to109_1739637868-00000000000000000000000000000000/USER
 /GluGluHToTauTau_HTXSFilter_STXS1p1_Bin107to109_M125_TuneCP5_13TeV-powheg-pythia8/aakhmets-mc_2016ULpreVFP_htautau_stxs_GluGluHToTauTau_Bin107to109_Ext1_1739637868-00000000000000000000000000000000/USER
 /GluGluHToTauTau_HTXSFilter_STXS1p1_Bin110to113_M125_TuneCP5_13TeV-powheg-pythia8/aakhmets-mc_2016ULpreVFP_htautau_stxs_GluGluHToTauTau_Bin110to113_1739637868-00000000000000000000000000000000/USER
-# /GluGluHToTauTau_HTXSFilter_STXS1p1_Bin110to113_M125_TuneCP5_13TeV-powheg-pythia8/aakhmets-mc_2016ULpreVFP_htautau_stxs_GluGluHToTauTau_Bin110to113_Ext1_<timestamp>-00000000000000000000000000000000/USER --> still to be done (waiting for https://cms-rucio-webui.cern.ch/rule?rule_id=06c1908ff4774d0c82b19103f6df5525 to complete)
+/GluGluHToTauTau_HTXSFilter_STXS1p1_Bin110to113_M125_TuneCP5_13TeV-powheg-pythia8/aakhmets-mc_2016ULpreVFP_htautau_stxs_GluGluHToTauTau_Bin110to113_Ext1_1743411054-00000000000000000000000000000000/USER
 /GluGluHToTauTau_M125_TuneCP5_13TeV-powheg-pythia8/aakhmets-mc_2016ULpreVFP_htautau_GluGluHToTauTau_1741088182-00000000000000000000000000000000/USER
 /GluGluHToTauTau_Pt-200ToInf_M-125_TuneCP5_MINLO_13TeV-powheg-pythia8/aakhmets-mc_2016ULpreVFP_htautau_GluGluHToTauTau_Pt-200ToInf_1739637868-00000000000000000000000000000000/USER
 /GluGluHToWWTo2L2Nu_M-125_TuneCP5_13TeV-powheg-jhugen727-pythia8/aakhmets-mc_2016ULpreVFP_otherhiggs_GluGluHToWWTo2L2Nu_1741088182-00000000000000000000000000000000/USER
