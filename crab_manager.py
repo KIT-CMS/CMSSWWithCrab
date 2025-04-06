@@ -74,6 +74,12 @@ def parse_args():
         type=int,
         help="Sleep duration in seconds between status checks.",
     )
+    parser.add_argument(
+        "--logdir",
+        default="logs",
+        type=str,
+        help="Name of the logdir (default: 'log')",
+    )
 
     return parser.parse_args()
 
@@ -156,7 +162,7 @@ async def worker(
     submission_queue, status_queue, args, worker_id, nworkers, is_submission_worker
 ):
     # Set up logging for this worker
-    logs_directory = pathlib.Path("logs")
+    logs_directory = pathlib.Path(args.logdir)
     logs_directory.mkdir(mode=0o755, parents=True, exist_ok=True)
     logs_path = logs_directory / f"worker_{worker_id}.log"
 
