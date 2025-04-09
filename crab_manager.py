@@ -78,7 +78,7 @@ def parse_args():
         "--logdir",
         default="logs",
         type=str,
-        help="Name of the logdir (default: 'log')",
+        help="Name of the logdir (default: 'logs')",
     )
 
     return parser.parse_args()
