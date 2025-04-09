@@ -1,4 +1,4 @@
-# NanoAOD production campaign for 2018 MC
+# NanoAOD production campaign for 2018UL NMSSM X &rightarrow; YH &rightarrow; bb&tau;&tau; samples
 
 ## Used configuration and setup:
 
