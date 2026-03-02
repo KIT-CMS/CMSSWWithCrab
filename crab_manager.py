@@ -18,6 +18,20 @@ from CRABAPI.RawCommand import crabCommand
 
 
 def parse_args():
+    """
+    Parse command line arguments for the crab manager script.
+    The following arguments are expected
+    - crab-config-patterns
+    - maxmemory
+    - maxjobruntime
+    - nworkers
+    - sitewhitelist
+    - siteblacklist
+    - resubmit-failed-immediately
+    - rotation-mode
+    - sleep-duration
+    - logdir
+    """
     parser = argparse.ArgumentParser(
         description="Script to manage a CMSSW production with crab",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -26,65 +40,25 @@ def parse_args():
     # Main options
 
     ## Necessary arguments
-    parser.add_argument(
-        "--crab-config-patterns",
-        nargs="+",
-        required=True,
-        help="List of path patterns to the crab configuration files, processed with glob",
-    )
-    parser.add_argument(
-        "--maxmemory",
-        default=None,
-        help="Maximum memory threshold in MB for resubmission passed to crab",
-    )
-    parser.add_argument(
-        "--maxjobruntime",
-        default=None,
-        help="Maximum job runtime threshold in minutes for resubmission passed to crab",
-    )
-    parser.add_argument(
-        "--nworkers",
-        default=0,
-        type=int,
-        help="Number of workers to manage the crab tasks simultaneously",
-    )
-    parser.add_argument(
-        "--sitewhitelist",
-        default=None,
-        help="Comma-separated list of sites to exclusively run your jobs on.",
-    )
-    parser.add_argument(
-        "--siteblacklist",
-        default=None,
-        help="Comma-separated list of sites to avoid running your jobs there.",
-    )
-    parser.add_argument(
-        "--resubmit-failed-immediately",
-        action="store_true",
-        help="Modify resubmission mode to resubmit failed jobs as soon as encountered.",
-    )
-    parser.add_argument(
-        "--rotation-mode",
-        action="store_true",
-        help="Enable rotation mode for status checking and resubmission.",
-    )
-    parser.add_argument(
-        "--sleep-duration",
-        default=900,
-        type=int,
-        help="Sleep duration in seconds between status checks.",
-    )
-    parser.add_argument(
-        "--logdir",
-        default="logs",
-        type=str,
-        help="Name of the logdir (default: 'logs')",
-    )
+    parser.add_argument("--crab-config-patterns", nargs="+", required=True, help="List of path patterns to the crab configuration files, processed with glob")
+    parser.add_argument("--maxmemory", default=None, help="Maximum memory threshold in MB for resubmission passed to crab")
+    parser.add_argument("--maxjobruntime", default=None, help="Maximum job runtime threshold in minutes for resubmission passed to crab")
+    parser.add_argument("--nworkers", default=0, type=int, help="Number of workers to manage the crab tasks simultaneously")
+    parser.add_argument("--sitewhitelist", default=None, help="Comma-separated list of sites to exclusively run your jobs on.")
+    parser.add_argument("--siteblacklist", default=None, help="Comma-separated list of sites to avoid running your jobs there.")
+    parser.add_argument("--resubmit-failed-immediately", action="store_true", help="Modify resubmission mode to resubmit failed jobs as soon as encountered.")
+    parser.add_argument("--rotation-mode", action="store_true", help="Enable rotation mode for status checking and resubmission.")
+    parser.add_argument("--sleep-duration", default=900, type=int, help="Sleep duration in seconds between status checks.")
+    parser.add_argument("--logdir", default="logs", type=str, help="Name of the logdir (default: 'logs')")
 
     return parser.parse_args()
 
 
 def load_config(config_path):
+    """
+    Load a crab configuration from a given path.
+    With importlib the configuration file is imported as a module and the config object is extracted and returned.
+    """
     spec = importlib.util.spec_from_file_location("crab_config_module", config_path)
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
@@ -255,13 +229,13 @@ async def worker(
                     for dataset in ast.literal_eval(res["outdatasets"]):
                         try:
                             das_output = await run_dasgoclient_query(
-                                "datset", dataset, "prod/phys03", True
+                                "dataset", dataset, "prod/phys03", True
                             )
                             das_output_files = await run_dasgoclient_query(
                                 "file", dataset, "prod/phys03", False
                             )
                             das_input = await run_dasgoclient_query(
-                                "dataset", cfg.Data.inputDataset, "prod/global", True
+                                "dataset", cfg.Data.inputDataset, cfg.Data.inputDBS, True
                             )
                             nevents_output = None
                             nevents_input = None

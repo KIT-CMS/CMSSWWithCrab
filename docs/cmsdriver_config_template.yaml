@@ -1,0 +1,13 @@
+data: # if data it uses `--data` in the cmsDriver command, if mc it uses `--mc`, for everything else it uses `--data`
+  cmssw_config_file: /work/.../cmssw_config.py # if provided, this config file will be used to run the jobs. If not provided, cmsDriver commands will be run to create the cmsRun config with the following parameters.
+  eventcontent: NANOAOD # used in `--eventcontent` 
+  datatier: NANOAOD # used in `--datatier`
+  step: NANO # used in `--step`
+  type: nano # used as first argument in the cmsDriver command. Only has a function as config file fragment for GEN steps.
+  python_filename: nano_config.py # used in `--python_filename`
+  fileout: nano.root  # used in `--fileout`
+  filein: inputfile.root # used in `--filein`
+mc:
+  ...
+embedding:
+  ...
