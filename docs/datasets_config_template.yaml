@@ -1,0 +1,11 @@
+# General structure:
+# {data,mc}:
+#   <era>:
+#     <sampletype>:
+#       <key>: <datasetname>
+inputDBS: phys03 # default: global, but if input file is located in another DBS, this can be specified here. (see also https://twiki.cern.ch/twiki/bin/view/CMSPublic/CRAB3ConfigurationFile)
+embedding: # Datasample type. Has to be matching with the other config files. Mostly data or mc.
+  2018UL: # Era. Has to be matching with the other config files. E.g. 2018, 2018UL, ...
+    mutau: # Dataset. Has to be matching with the other config files. E.g. ttbar, dy, ...
+      C: /EmbeddingRun2018C/MuTauFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER # Key: Bin, Value: dataset name. A Dataset is often binned in different samples. E.g. for ttbar: inclusive, 0-70, 70-100, ... For data: A, B, C, D for the different run periods.
+
