@@ -235,7 +235,7 @@ async def worker(
                                 "file", dataset, "prod/phys03", False
                             )
                             das_input = await run_dasgoclient_query(
-                                "dataset", cfg.Data.inputDataset, cfg.Data.inputDBS, True
+                                "dataset", cfg.Data.inputDataset, f"prod/{cfg.Data.inputDBS}", True
                             )
                             nevents_output = None
                             nevents_input = None
