@@ -31,15 +31,21 @@ def parse_args():
     parser.add_argument("--datasets", required=True, help="Path to the dataset configuration .yaml file")
 
     ## Optional arguments
+    # Either provide a config listing the locations of the ready cmsRun python configs, or provide the cmsDriver configs (`cmsdriver` and `conditions` configs)
 
-    # CMSSW configuration group
-    cmssw = parser.add_argument_group("CMSSW", "Configuration related to CMSSW settings to run a cmsRun config")
+    # cmsdriver configuration group
+    cmssw_config = parser.add_argument_group("CMSSW config", "Configuration related to already present cmsRun configs. Either this or the \"cmsDriver\" option has to be provided.")
 
-    ## Necessary arguments
-    cmssw.add_argument("--conditions", required=True, help="Path to the conditions configuration .yaml file")
-    cmssw.add_argument("--cmsdriver", required=True, help="Path to the cmsdriver configuration .yaml file")
-    cmssw.add_argument("--nThreads", type=int, default=1, help="Number of threads to be used for the cmsRun config")
-    cmssw.add_argument("--nStreams", type=int, default=0, help="Number of streams to be used for the cmsRun config. If set to 0, nThreads will be taken by cmsRun.")
+    ## config with cmssw python config files:
+    cmssw_config.add_argument("--cmssw-configs", help="Path to a .yaml file listing the locations of the ready cmsRun python config files. The keys of this config have to be the same as the keys in the conditions configuration file, e.g. data and mc. Can be used as an alternative to providing cmsDriver configuration files. If provided, the cmsRun config files listed in this config will be copied to the cmsdriver directory and no cmsDriver command will be run.")
+    
+    cmsdriver = parser.add_argument_group("cmsDriver", "Configuration related to cmsDriver settings to generate a cmsRun config. Either this or the \"CMSSW config\" option has to be provided.")
+    
+    ## Necessary arguments for cmsDriver configuration:
+    cmsdriver.add_argument("--conditions", help="Path to the conditions configuration .yaml file, which contains the globaltag and era information for the cmsDriver command. The keys of this config have to be the same as the keys in the cmsDriver configuration file, e.g. data and mc.")
+    cmsdriver.add_argument("--cmsdriver", help="Path to the cmsDriver configuration .yaml file, which contains general configuration for the cmsDriver command, e.g. type, filein, fileout, step, eventcontent, datatier, python_filename. The keys of this config have to be the same as the keys in the conditions configuration file, e.g. data and mc.")
+    cmsdriver.add_argument("--nThreads", type=int, default=1, help="Number of threads to be used for the cmsRun config")
+    cmsdriver.add_argument("--nStreams", type=int, default=0, help="Number of streams to be used for the cmsRun config. If set to 0, nThreads will be taken by cmsRun.")
 
     # Crab configuration group
     crab = parser.add_argument_group(
@@ -64,8 +70,15 @@ def initialize(args):
     datasets = yaml.safe_load(open(args_dict["datasets"], "r"))
     args_dict["inputDBS"] = datasets.pop("inputDBS", "global")
     args_dict["datasets"] = datasets
-    args_dict["conditions"] = yaml.safe_load(open(args_dict["conditions"], "r"))
-    args_dict["cmsdriver"] = yaml.safe_load(open(args_dict["cmsdriver"], "r"))
+    # check if cmssw_configs is provided, if so, add it to the args_dict, if not, check if cmsdriver and conditions are provided, if so, add them to the args_dict, if not, raise an error
+    if args_dict.get("cmssw_configs", None) is not None:
+        args_dict["cmssw_configs"] = yaml.safe_load(open(args_dict["cmssw_configs"], "r"))
+    elif args_dict.get("conditions", None) is not None and args_dict.get("cmsdriver", None) is not None:
+        args_dict["conditions"] = yaml.safe_load(open(args_dict["conditions"], "r"))
+        args_dict["cmsdriver"] = yaml.safe_load(open(args_dict["cmsdriver"], "r"))
+    else:
+        raise ValueError("Either 'cmssw_configs' or both 'conditions' and 'cmsdriver' must be provided.")
+
     args_dict["crab"] = config
     args_dict["timestamp"] = str(int(datetime.datetime.now().timestamp()))
     return args_dict
@@ -77,26 +90,26 @@ def prepare(args):
     work_directory.mkdir(mode=0o755, parents=True, exist_ok=True)
 
     # Prepare cmsDriver commands and create cmsRun configs
-    cmsdriver_directory = work_directory / "cmsdriver"
-    cmsdriver_directory.mkdir(mode=0o755, parents=True, exist_ok=True)
+    cmssw_config_dir = work_directory / "cmssw_configs"
+    cmssw_config_dir.mkdir(mode=0o755, parents=True, exist_ok=True)
 
-    cmsdriver_keys = set(args["cmsdriver"].keys())
-    conditions_keys = set(args["conditions"].keys())
-    if cmsdriver_keys != conditions_keys:
-        print(
-            f"Error: expecting keys for cmsdriver keys {cmsdriver_keys} to be the same as condition keys {conditions_keys}. This is not the case"
-        )
-        exit(1)
-
-    for k, cmsdriverspecs in args["cmsdriver"].items():
-        for dt_period, configuration in args["conditions"][k].items():
-            if "cmssw_config_file" in cmsdriverspecs:
+    # If cmssw_configs is provided, copy the cmsRun configs to the cmssw_config_dir and add the path to the cmsRun config
+    if args.get("cmssw_configs", None):
+        for k, dt_period in args["cmssw_configs"].items():
+            for dt, config_file in dt_period.items():
                 # copy cmssw config to cmsdriver directory
-                cmsrun = cmsdriver_directory / cmsdriverspecs.get("python_filename", "cmssw_config.py")
-                shutil.copy(cmsdriverspecs["cmssw_config_file"], cmsrun)
-                args["conditions"][k][dt_period]["cmsrun"] = cmsrun
-            else:
-                cmsrundir = cmsdriver_directory / str(dt_period)
+                cmsrun = cmssw_config_dir / f"{k}_{dt}_cmssw_config.py"
+                shutil.copy(config_file, cmsrun)
+                args["cmssw_configs"][k][dt] = cmsrun
+    else:
+        # Check that the keys in the cmsdriver and conditions config are the same, e.g. data and mc
+        cmsdriver_keys = set(args["cmsdriver"].keys())
+        conditions_keys = set(args["conditions"].keys())
+        assert cmsdriver_keys == conditions_keys, f"cmsdriver keys {cmsdriver_keys} must match conditions keys {conditions_keys}"
+
+        for k, cmsdriverspecs in args["cmsdriver"].items():
+            for dt_period, configuration in args["conditions"][k].items():
+                cmsrundir = cmssw_config_dir / str(dt_period)
                 cmsrundir.mkdir(mode=0o755, parents=True, exist_ok=True)
                 cmsrun = cmsrundir / cmsdriverspecs["python_filename"]
                 args["conditions"][k][dt_period]["cmsrun"] = cmsrun
@@ -139,9 +152,10 @@ def prepare(args):
                     dataset_crab.General.requestName = "_".join(
                         [k, dt_period, dataset_type, dkey]
                     )
-                    dataset_crab.JobType.psetName = str(
-                        args["conditions"][k][dt_period]["cmsrun"]
-                    )
+                    if args.get("cmssw_configs", None):
+                        dataset_crab.JobType.psetName = str(args["cmssw_configs"][k][dt_period])
+                    else:
+                        dataset_crab.JobType.psetName = str(args["conditions"][k][dt_period]["cmsrun"])
                     dataset_crab.Data.inputDataset = dname
                     dataset_crab.Data.outputDatasetTag = (
                         dataset_crab.General.requestName + "_" + args["timestamp"]
