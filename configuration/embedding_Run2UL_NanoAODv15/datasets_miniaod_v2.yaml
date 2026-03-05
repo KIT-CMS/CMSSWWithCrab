@@ -1,0 +1,143 @@
+# General structure:
+# {data,mc}:
+#   <era>:
+#     <sampletype>:
+#       <key>: <datasetname>
+inputDBS: phys03
+embedding:
+  2016UL-HIPM:
+    mutau:
+      B_ver1: /EmbeddingRun2016-HIPM_B_ver1/MuTauFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      B_ver2: /EmbeddingRun2016-HIPM_B_ver2/MuTauFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      C: /EmbeddingRun2016-HIPM_C/MuTauFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      D: /EmbeddingRun2016-HIPM_D/MuTauFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      E: /EmbeddingRun2016-HIPM_E/MuTauFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      F: /EmbeddingRun2016-HIPM_F/MuTauFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+    eltau:
+      B_ver1: /EmbeddingRun2016-HIPM_B_ver1/ElTauFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      B_ver2: /EmbeddingRun2016-HIPM_B_ver2/ElTauFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      C: /EmbeddingRun2016-HIPM_C/ElTauFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      D: /EmbeddingRun2016-HIPM_D/ElTauFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      E: /EmbeddingRun2016-HIPM_E/ElTauFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      F: /EmbeddingRun2016-HIPM_F/ElTauFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+    tautau:
+      B_ver1: /EmbeddingRun2016-HIPM_B_ver1/TauTauFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      B_ver2: /EmbeddingRun2016-HIPM_B_ver2/TauTauFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      C: /EmbeddingRun2016-HIPM_C/TauTauFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      D: /EmbeddingRun2016-HIPM_D/TauTauFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      E: /EmbeddingRun2016-HIPM_E/TauTauFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      F: /EmbeddingRun2016-HIPM_F/TauTauFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+    elmu:
+      B_ver1: /EmbeddingRun2016-HIPM_B_ver1/ElMuFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      B_ver2: /EmbeddingRun2016-HIPM_B_ver2/ElMuFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      C: /EmbeddingRun2016-HIPM_C/ElMuFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      D: /EmbeddingRun2016-HIPM_D/ElMuFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      E: /EmbeddingRun2016-HIPM_E/ElMuFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      F: /EmbeddingRun2016-HIPM_F/ElMuFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+    muemb:
+      B_ver1: /EmbeddingRun2016-HIPM_B_ver1/MuonEmbedding-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      B_ver2: /EmbeddingRun2016-HIPM_B_ver2/MuonEmbedding-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      C: /EmbeddingRun2016-HIPM_C/MuonEmbedding-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      D: /EmbeddingRun2016-HIPM_D/MuonEmbedding-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      E: /EmbeddingRun2016-HIPM_E/MuonEmbedding-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      F: /EmbeddingRun2016-HIPM_F/MuonEmbedding-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+    elemb:
+      B_ver1: /EmbeddingRun2016-HIPM_B_ver1/ElectronEmbedding-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      B_ver2: /EmbeddingRun2016-HIPM_B_ver2/ElectronEmbedding-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      C: /EmbeddingRun2016-HIPM_C/ElectronEmbedding-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      D: /EmbeddingRun2016-HIPM_D/ElectronEmbedding-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      E: /EmbeddingRun2016-HIPM_E/ElectronEmbedding-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      F: /EmbeddingRun2016-HIPM_F/ElectronEmbedding-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+  2016UL:
+    mutau:
+      F: /EmbeddingRun2016_F/MuTauFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      G: /EmbeddingRun2016_G/MuTauFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      H: /EmbeddingRun2016_H/MuTauFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+    eltau:
+      F: /EmbeddingRun2016_F/ElTauFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      G: /EmbeddingRun2016_G/ElTauFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      H: /EmbeddingRun2016_H/ElTauFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+    tautau:
+      F: /EmbeddingRun2016_F/TauTauFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      G: /EmbeddingRun2016_G/TauTauFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      H: /EmbeddingRun2016_H/TauTauFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+    elmu:
+      F: /EmbeddingRun2016_F/ElMuFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      G: /EmbeddingRun2016_G/ElMuFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      H: /EmbeddingRun2016_H/ElMuFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+    muemb:
+      F: /EmbeddingRun2016_F/MuonEmbedding-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      G: /EmbeddingRun2016_G/MuonEmbedding-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      H: /EmbeddingRun2016_H/MuonEmbedding-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+    elemb:
+      F: /EmbeddingRun2016_F/ElectronEmbedding-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      G: /EmbeddingRun2016_G/ElectronEmbedding-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      H: /EmbeddingRun2016_H/ElectronEmbedding-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+  2017UL:
+    mutau: 
+      B: /EmbeddingRun2017B/MuTauFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      C: /EmbeddingRun2017C/MuTauFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      D: /EmbeddingRun2017D/MuTauFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      E: /EmbeddingRun2017E/MuTauFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      F: /EmbeddingRun2017F/MuTauFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+    eltau:
+      B: /EmbeddingRun2017B/ElTauFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      C: /EmbeddingRun2017C/ElTauFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      D: /EmbeddingRun2017D/ElTauFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      E: /EmbeddingRun2017E/ElTauFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      F: /EmbeddingRun2017F/ElTauFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+    tautau:
+      B: /EmbeddingRun2017B/TauTauFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      C: /EmbeddingRun2017C/TauTauFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      D: /EmbeddingRun2017D/TauTauFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      E: /EmbeddingRun2017E/TauTauFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      F: /EmbeddingRun2017F/TauTauFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+    elmu:
+      B: /EmbeddingRun2017B/ElMuFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      C: /EmbeddingRun2017C/ElMuFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      D: /EmbeddingRun2017D/ElMuFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      E: /EmbeddingRun2017E/ElMuFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      F: /EmbeddingRun2017F/ElMuFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+    muemb:
+      B: /EmbeddingRun2017B/MuonEmbedding-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      C: /EmbeddingRun2017C/MuonEmbedding-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      D: /EmbeddingRun2017D/MuonEmbedding-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      E: /EmbeddingRun2017E/MuonEmbedding-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      F: /EmbeddingRun2017F/MuonEmbedding-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+    elemb:
+      B: /EmbeddingRun2017B/ElectronEmbedding-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      C: /EmbeddingRun2017C/ElectronEmbedding-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      D: /EmbeddingRun2017D/ElectronEmbedding-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      E: /EmbeddingRun2017E/ElectronEmbedding-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      F: /EmbeddingRun2017F/ElectronEmbedding-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+  2018UL:
+    mutau: 
+      A: /EmbeddingRun2018A/MuTauFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      B: /EmbeddingRun2018B/MuTauFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      # C: /EmbeddingRun2018C/MuTauFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      D: /EmbeddingRun2018D/MuTauFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER 
+    eltau:
+      A: /EmbeddingRun2018A/ElTauFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      B: /EmbeddingRun2018B/ElTauFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      C: /EmbeddingRun2018C/ElTauFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      D: /EmbeddingRun2018D/ElTauFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+    tautau:
+      A: /EmbeddingRun2018A/TauTauFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      B: /EmbeddingRun2018B/TauTauFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      C: /EmbeddingRun2018C/TauTauFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      D: /EmbeddingRun2018D/TauTauFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+    elmu:
+      A: /EmbeddingRun2018A/ElMuFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      B: /EmbeddingRun2018B/ElMuFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      C: /EmbeddingRun2018C/ElMuFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      D: /EmbeddingRun2018D/ElMuFinalState-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+    muemb:
+      A: /EmbeddingRun2018A/MuonEmbedding-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      B: /EmbeddingRun2018B/MuonEmbedding-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      C: /EmbeddingRun2018C/MuonEmbedding-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      D: /EmbeddingRun2018D/MuonEmbedding-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+    elemb:
+      A: /EmbeddingRun2018A/ElectronEmbedding-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      B: /EmbeddingRun2018B/ElectronEmbedding-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      C: /EmbeddingRun2018C/ElectronEmbedding-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER
+      D: /EmbeddingRun2018D/ElectronEmbedding-inputDoubleMu_106X_ULegacy_miniAOD-v1/USER

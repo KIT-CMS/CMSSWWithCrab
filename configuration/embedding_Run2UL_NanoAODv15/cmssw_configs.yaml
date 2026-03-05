@@ -1,0 +1,5 @@
+embedding:
+  2016UL-HIPM: configuration/embedding_Run2UL_NanoAODv15/embedding_2016UL_HIPM_nanoAODv15.py
+  2016UL: configuration/embedding_Run2UL_NanoAODv15/embedding_2016UL_nanoAODv15.py
+  2017UL: configuration/embedding_Run2UL_NanoAODv15/embedding_2017UL_nanoAODv15.py 
+  2018UL: configuration/embedding_Run2UL_NanoAODv15/embedding_2018UL_nanoAODv15.py
