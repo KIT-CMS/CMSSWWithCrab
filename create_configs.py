@@ -92,8 +92,9 @@ def prepare(args):
         for dt_period, configuration in args["conditions"][k].items():
             if "cmssw_config_file" in cmsdriverspecs:
                 # copy cmssw config to cmsdriver directory
-                shutil.copy(cmsdriverspecs["cmssw_config_file"], cmsdriver_directory)
-                args["conditions"][k][dt_period]["cmsrun"] = cmsdriver_directory / cmsdriverspecs["cmssw_config_file"]
+                cmsrun = cmsdriver_directory / cmsdriverspecs.get("python_filename", "cmssw_config.py")
+                shutil.copy(cmsdriverspecs["cmssw_config_file"], cmsrun)
+                args["conditions"][k][dt_period]["cmsrun"] = cmsrun
             else:
                 cmsrundir = cmsdriver_directory / str(dt_period)
                 cmsrundir.mkdir(mode=0o755, parents=True, exist_ok=True)
